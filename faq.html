@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자주 묻는 질문 (FAQ) - PlayPing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --dark: #2C3E50;
+            --light: #F7F9FC;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.8;
+        }
+
+        header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        .faq-category {
+            margin-bottom: 2rem;
+        }
+
+        .faq-category h2 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-question {
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #f0f0f0;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #f9f9f9;
+        }
+
+        .faq-answer-content {
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .faq-answer p {
+            margin-bottom: 0.8rem;
+        }
+
+        .faq-answer ul {
+            margin-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .contact-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-box h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-box a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        footer {
+            background: var(--dark);
+            color: #aaa;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">PlayPing</a>
+            <a href="index.html" class="back-link">← 홈으로 돌아가기</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>자주 묻는 질문 (FAQ)</h1>
+        <p class="subtitle">PlayPing 이용에 관한 궁금한 점을 해결해드립니다.</p>
+
+        <div class="faq-category">
+            <h2>📱 시작하기</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">PlayPing은 어떤 앱인가요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>PlayPing은 친구들과 실시간으로 즐길 수 있는 멀티플레이어 파티 게임 앱입니다.</p>
+                        <p>최대 8명까지 함께 다양한 미니게임을 즐길 수 있으며, 순발력 게임, 기억력 게임, OX 퀴즈, 타일 매칭 등 10가지 이상의 게임을 제공합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">앱은 어디서 다운로드할 수 있나요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>PlayPing은 다음 스토어에서 무료로 다운로드할 수 있습니다:</p>
+                        <ul>
+                            <li>Apple App Store (iOS)</li>
+                            <li>Google Play Store (Android)</li>
+                        </ul>
+                        <p>"PlayPing" 또는 "플레이핑"으로 검색해주세요.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">회원가입은 필수인가요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>아니요, 필수는 아닙니다!</p>
+                        <p>"익명으로 시작하기" 버튼을 사용하면 회원가입 없이도 바로 게임을 즐길 수 있습니다. 다만, 익명 계정은 앱을 삭제하면 데이터가 사라질 수 있습니다.</p>
+                        <p>이메일로 가입하시면 게임 기록이 안전하게 저장됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-category">
+            <h2>🎮 게임 플레이</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">게임방은 어떻게 만드나요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>메인 화면에서 "방 만들기" 버튼을 탭하면 새로운 게임방이 생성됩니다.</p>
+                        <p>방이 생성되면 QR 코드와 방 코드가 표시되며, 이를 친구들에게 공유하면 됩니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">친구들은 어떻게 초대하나요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>두 가지 방법으로 친구를 초대할 수 있습니다:</p>
+                        <ul>
+                            <li><strong>QR 코드</strong>: 친구가 앱에서 QR 스캔 기능을 사용해 코드를 스캔</li>
+                            <li><strong>방 코드</strong>: 6자리 코드를 직접 입력하여 참가</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">최대 몇 명까지 함께 플레이할 수 있나요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>한 게임방에 최대 8명까지 참가할 수 있습니다.</p>
+                        <p>게임 유형에 따라 최소 2명부터 시작할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">어떤 종류의 게임이 있나요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>현재 제공되는 게임:</p>
+                        <ul>
+                            <li>⚡ 순발력 게임 - 빠른 반응 속도 테스트</li>
+                            <li>🧠 기억력 게임 - 카드 매칭 챌린지</li>
+                            <li>⭕ OX 퀴즈 - 상식 테스트</li>
+                            <li>🗺️ 랜드마크 게임 - 세계 명소 맞추기</li>
+                            <li>🎯 타일 매칭 - 패턴 인식 게임</li>
+                            <li>⌨️ 타이핑 게임 - 타이핑 속도 대결</li>
+                            <li>🔢 수학 연산 - 암산 능력 테스트</li>
+                            <li>📚 사자성어 퀴즈 - 한자 성어 학습</li>
+                        </ul>
+                        <p>앞으로 더 많은 게임이 추가될 예정입니다!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-category">
+            <h2>💰 비용 및 광고</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">앱 이용료가 있나요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>아니요, PlayPing은 완전 무료입니다!</p>
+                        <p>모든 게임을 무료로 이용할 수 있으며, 인앱 구매도 없습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">광고가 표시되나요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>네, 무료 서비스 유지를 위해 광고가 표시됩니다.</p>
+                        <ul>
+                            <li>메인 화면 하단에 배너 광고</li>
+                            <li>게임 결과 후 가끔 전면 광고</li>
+                            <li>게임방 목록에 네이티브 광고</li>
+                        </ul>
+                        <p>광고는 게임 플레이를 방해하지 않도록 최소화했습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-category">
+            <h2>🔒 계정 및 개인정보</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">내 개인정보는 안전한가요?</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>네, 안전합니다.</p>
+                        <ul>
+                            <li>모든 데이터는 암호화되어 전송됩니다 (TLS/SSL)</li>
+                            <li>Google Firebase의 보안 시스템을 사용합니다</li>
+                            <li>최소한의 정보만 수집합니다</li>
+                        </ul>
+                        <p>자세한 내용은 <a href="privacy.html">개인정보 처리방침</a>을 확인해주세요.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">계정을 삭제하고 싶어요.</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>앱 내 설정 메뉴에서 계정을 삭제할 수 있습니다:</p>
+                        <ol>
+                            <li>앱 실행 후 설정 메뉴로 이동</li>
+                            <li>"계정 삭제" 옵션 선택</li>
+                            <li>확인 후 계정이 삭제됩니다</li>
+                        </ol>
+                        <p>⚠️ 삭제된 계정과 게임 데이터는 복구할 수 없습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-category">
+            <h2>🛠️ 문제 해결</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">게임이 끊기거나 느려요.</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>네트워크 연결을 확인해주세요:</p>
+                        <ul>
+                            <li>안정적인 Wi-Fi 또는 모바일 데이터 연결 필요</li>
+                            <li>앱을 완전히 종료 후 다시 실행</li>
+                            <li>기기를 재부팅</li>
+                            <li>앱을 최신 버전으로 업데이트</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">앱이 갑자기 종료돼요.</div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>다음을 시도해보세요:</p>
+                        <ul>
+                            <li>앱을 최신 버전으로 업데이트</li>
+                            <li>기기의 운영체제 업데이트</li>
+                            <li>앱 캐시 삭제</li>
+                            <li>기기 저장공간 확보</li>
+                        </ul>
+                        <p>문제가 계속되면 <a href="mailto:kyungsnim@kakao.com">kyungsnim@kakao.com</a>으로 문의해주세요.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-box">
+            <h3>다른 질문이 있으신가요?</h3>
+            <p>위에서 답을 찾지 못하셨다면 이메일로 문의해주세요.</p>
+            <p><a href="mailto:kyungsnim@kakao.com">kyungsnim@kakao.com</a></p>
+            <p style="color: #888; font-size: 0.9rem; margin-top: 1rem;">영업일 기준 3일 이내에 답변드립니다.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 PlayPing. All rights reserved. | <a href="index.html">홈으로</a></p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const answer = item.querySelector('.faq-answer');
+                const isActive = item.classList.contains('active');
+
+                // Close all other items
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                });
+
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
