@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../presentation/pages/dashboard_page.dart';
+import '../presentation/pages/game_results_page.dart';
 import '../presentation/pages/game_stats_page.dart';
 import '../presentation/pages/login_page.dart';
 import '../presentation/pages/reports_page.dart';
@@ -54,6 +55,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/games',
             builder: (context, state) => const GameStatsPage(),
+          ),
+          GoRoute(
+            path: '/game-results',
+            builder: (context, state) => const GameResultsPage(),
           ),
           GoRoute(
             path: '/reports',

@@ -8,6 +8,10 @@ class GameStats {
   final int monthGamesPlayed;
   final int activeRooms;
   final double avgPlayersPerGame;
+  // Multi-game mode stats
+  final int singleModeRooms;
+  final int multiModeRooms;
+  final int totalIndividualGames; // 멀티게임 모드 내 개별 게임 수 포함
 
   const GameStats({
     required this.totalGamesPlayed,
@@ -16,6 +20,9 @@ class GameStats {
     required this.monthGamesPlayed,
     required this.activeRooms,
     required this.avgPlayersPerGame,
+    this.singleModeRooms = 0,
+    this.multiModeRooms = 0,
+    this.totalIndividualGames = 0,
   });
 
   factory GameStats.empty() => const GameStats(
@@ -25,6 +32,9 @@ class GameStats {
         monthGamesPlayed: 0,
         activeRooms: 0,
         avgPlayersPerGame: 0,
+        singleModeRooms: 0,
+        multiModeRooms: 0,
+        totalIndividualGames: 0,
       );
 }
 

@@ -53,7 +53,7 @@ class GameStatsPage extends ConsumerWidget {
                 runSpacing: 16,
                 children: [
                   StatCard(
-                    title: 'Total Games',
+                    title: 'Total Rooms',
                     value: _formatNumber(stats.totalGamesPlayed),
                     icon: Icons.games,
                     color: Colors.blue,
@@ -87,6 +87,24 @@ class GameStatsPage extends ConsumerWidget {
                     value: stats.avgPlayersPerGame.toStringAsFixed(1),
                     icon: Icons.people,
                     color: Colors.indigo,
+                  ),
+                  StatCard(
+                    title: 'Single Mode (100)',
+                    value: '${stats.singleModeRooms}',
+                    icon: Icons.looks_one,
+                    color: Colors.cyan,
+                  ),
+                  StatCard(
+                    title: 'Multi Mode (100)',
+                    value: '${stats.multiModeRooms}',
+                    icon: Icons.format_list_numbered,
+                    color: Colors.deepOrange,
+                  ),
+                  StatCard(
+                    title: 'Individual Games (100)',
+                    value: '${stats.totalIndividualGames}',
+                    icon: Icons.sports_esports,
+                    color: Colors.pink,
                   ),
                 ],
               ),

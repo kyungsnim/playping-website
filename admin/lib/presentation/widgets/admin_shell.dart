@@ -37,6 +37,9 @@ class AdminShell extends ConsumerWidget {
                   context.go('/games');
                   break;
                 case 4:
+                  context.go('/game-results');
+                  break;
+                case 5:
                   context.go('/reports');
                   break;
               }
@@ -99,6 +102,11 @@ class AdminShell extends ConsumerWidget {
                 label: Text('Games'),
               ),
               NavigationRailDestination(
+                icon: Icon(Icons.history_outlined),
+                selectedIcon: Icon(Icons.history),
+                label: Text('Results'),
+              ),
+              NavigationRailDestination(
                 icon: Icon(Icons.report_outlined),
                 selectedIcon: Icon(Icons.report),
                 label: Text('Reports'),
@@ -118,7 +126,8 @@ class AdminShell extends ConsumerWidget {
     if (path.startsWith('/users')) return 1;
     if (path.startsWith('/retention')) return 2;
     if (path.startsWith('/games')) return 3;
-    if (path.startsWith('/reports')) return 4;
+    if (path.startsWith('/game-results')) return 4;
+    if (path.startsWith('/reports')) return 5;
     return 0;
   }
 }

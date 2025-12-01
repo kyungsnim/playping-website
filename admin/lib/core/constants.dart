@@ -14,6 +14,8 @@ class AdminConstants {
   static const String usersCollection = 'users';
   static const String roomsCollection = 'rooms';
   static const String reportsCollection = 'reports';
+  static const String statsCollection = 'stats';
+  static const String gameStatsDocument = 'gameStats';
 
   // User fields
   static const String userEmail = 'email';
@@ -32,6 +34,15 @@ class AdminConstants {
   static const String roomCreatedAt = 'createdAt';
   static const String roomFinishedAt = 'finishedAt';
   static const String roomPlayerIds = 'playerIds';
+  static const String roomMode = 'mode';
+  static const String roomGames = 'games';
+
+  // Room mode values
+  static const String roomModeSingle = 'single';
+  static const String roomModeMulti = 'multi';
+
+  // Game config fields (within roomGames array)
+  static const String gameConfigGameType = 'gameType';
 
   // Room status values
   static const String roomStatusWaiting = 'RoomStatus.waiting';
@@ -60,23 +71,22 @@ class AdminConstants {
   static const Map<String, String> gameTypeNames = {
     'GameType.reflexes': 'Reflexes',
     'GameType.memory': 'Memory',
-    'GameType.liar': 'Liar Game',
     'GameType.bombPassing': 'Bomb Passing',
-    'GameType.dilemma': 'Dilemma',
-    'GameType.roulette': 'Roulette',
-    'GameType.truthOrDare': 'Truth or Dare',
     'GameType.findDifference': 'Find Difference',
+    'GameType.oxQuiz': 'OX Quiz',
     'GameType.landmark': 'Landmark Quiz',
     'GameType.tileMatching': 'Tile Matching',
     'GameType.speedTyping': 'Speed Typing',
     'GameType.leftRight': 'Left Right',
     'GameType.mathSpeed': 'Math Speed',
     'GameType.idioms': 'Idioms',
+    'GameType.jumpGame': 'Jump Game',
     'GameType.archery': 'Archery',
-    'GameType.jump': 'Jump Game',
-    'GameType.colorSwitch': 'Color Switch',
     'GameType.numberSum': 'Number Sum',
     'GameType.escapeRoom': 'Escape Room',
-    'GameType.oxQuiz': 'OX Quiz',
+    'GameType.avoidDog': 'Avoid Dog',
+    'GameType.colorSwitch': 'Color Switch',
+    'GameType.koreanWordle': 'Korean Wordle',
+    'GameType.oddOneOut': 'Odd One Out',
   };
 }
