@@ -31,15 +31,18 @@ class AdminShell extends ConsumerWidget {
                   context.go('/users');
                   break;
                 case 2:
-                  context.go('/retention');
+                  context.go('/user-management');
                   break;
                 case 3:
-                  context.go('/games');
+                  context.go('/retention');
                   break;
                 case 4:
-                  context.go('/game-results');
+                  context.go('/games');
                   break;
                 case 5:
+                  context.go('/game-results');
+                  break;
+                case 6:
                   context.go('/reports');
                   break;
               }
@@ -75,7 +78,7 @@ class AdminShell extends ConsumerWidget {
                     onPressed: () {
                       ref.read(adminAuthProvider.notifier).signOut();
                     },
-                    tooltip: 'Sign out',
+                    tooltip: '로그아웃',
                   ),
                 ),
               ),
@@ -84,32 +87,37 @@ class AdminShell extends ConsumerWidget {
               NavigationRailDestination(
                 icon: Icon(Icons.dashboard_outlined),
                 selectedIcon: Icon(Icons.dashboard),
-                label: Text('Dashboard'),
+                label: Text('대시보드'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.analytics_outlined),
+                selectedIcon: Icon(Icons.analytics),
+                label: Text('사용자 통계'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.people_outlined),
                 selectedIcon: Icon(Icons.people),
-                label: Text('Users'),
+                label: Text('사용자 관리'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.trending_up_outlined),
                 selectedIcon: Icon(Icons.trending_up),
-                label: Text('Retention'),
+                label: Text('리텐션'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.games_outlined),
                 selectedIcon: Icon(Icons.games),
-                label: Text('Games'),
+                label: Text('게임 통계'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.history_outlined),
                 selectedIcon: Icon(Icons.history),
-                label: Text('Results'),
+                label: Text('게임 결과'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.report_outlined),
                 selectedIcon: Icon(Icons.report),
-                label: Text('Reports'),
+                label: Text('신고 관리'),
               ),
             ],
           ),
@@ -124,10 +132,11 @@ class AdminShell extends ConsumerWidget {
   int _getSelectedIndex(String path) {
     if (path.startsWith('/dashboard')) return 0;
     if (path.startsWith('/users')) return 1;
-    if (path.startsWith('/retention')) return 2;
-    if (path.startsWith('/games')) return 3;
-    if (path.startsWith('/game-results')) return 4;
-    if (path.startsWith('/reports')) return 5;
+    if (path.startsWith('/user-management')) return 2;
+    if (path.startsWith('/retention')) return 3;
+    if (path.startsWith('/games')) return 4;
+    if (path.startsWith('/game-results')) return 5;
+    if (path.startsWith('/reports')) return 6;
     return 0;
   }
 }

@@ -27,6 +27,11 @@ class AdminConstants {
   static const String userAdministrativeArea = 'administrativeArea';
   static const String userLocality = 'locality';
   static const String userProvider = 'provider';
+  static const String userCoins = 'coins';
+  static const String userAdsRemoved = 'adsRemoved';
+  static const String userAdsRemovedAt = 'adsRemovedAt';
+  static const String userIsAdmin = 'isAdmin';
+  static const String userIsBlocked = 'isBlocked';
 
   // Room fields
   static const String roomGameType = 'gameType';

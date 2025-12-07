@@ -53,13 +53,28 @@ class GameResultModel {
           .toList();
     }
 
+    // Parse finishedAt - handle both Timestamp and String formats
+    // finishedAt이 없으면 createdAt을 fallback으로 사용
+    DateTime finishedAt;
+    final finishedAtData = data['finishedAt'];
+    final createdAtData = data['createdAt'];
+
+    if (finishedAtData is Timestamp) {
+      finishedAt = finishedAtData.toDate();
+    } else if (finishedAtData is String) {
+      finishedAt = DateTime.tryParse(finishedAtData) ?? _parseCreatedAt(createdAtData);
+    } else {
+      // finishedAt이 없으면 createdAt 사용 (DateTime.now() 대신)
+      finishedAt = _parseCreatedAt(createdAtData);
+    }
+
     return GameResultModel(
       roomId: doc.id,
       roomName: data['name'] as String? ?? 'Unknown Room',
       gameType: data['gameType'] as String? ?? 'Unknown',
       mode: data['mode'] as String? ?? 'single',
       gameMode: data['gameMode'] as String? ?? 'GameMode.individual',
-      finishedAt: (data['finishedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      finishedAt: finishedAt,
       playerIds: List<String>.from(data['playerIds'] ?? []),
       playerCount: (data['playerIds'] as List?)?.length ?? 0,
       hostId: data['hostId'] as String?,
@@ -83,29 +98,53 @@ class GameResultModel {
     return _formatGameType(gameType);
   }
 
+  /// createdAt 파싱 헬퍼 (finishedAt이 없을 때 fallback용)
+  static DateTime _parseCreatedAt(dynamic createdAtData) {
+    if (createdAtData is Timestamp) {
+      return createdAtData.toDate();
+    } else if (createdAtData is String) {
+      return DateTime.tryParse(createdAtData) ?? DateTime(2020, 1, 1);
+    }
+    // 둘 다 없으면 오래된 날짜로 설정 (최하단에 표시되도록)
+    return DateTime(2020, 1, 1);
+  }
+
   static String _formatGameType(String gameType) {
+    // 'GameType.' 접두사 제거
+    String typeName = gameType.replaceFirst('GameType.', '');
+
+    // snake_case를 camelCase로 변환 (예: tile_matching -> tileMatching)
+    if (typeName.contains('_')) {
+      final parts = typeName.split('_');
+      typeName = parts.first +
+          parts
+              .skip(1)
+              .map((p) => p.isEmpty ? '' : p[0].toUpperCase() + p.substring(1))
+              .join();
+    }
+
     final typeMap = {
-      'GameType.reflexes': '순발력 게임',
-      'GameType.memory': '기억력 게임',
-      'GameType.bombPassing': '폭탄 돌리기',
-      'GameType.findDifference': '틀린그림찾기',
-      'GameType.oxQuiz': 'OX 퀴즈',
-      'GameType.landmark': '랜드마크 퀴즈',
-      'GameType.tileMatching': '타일 매칭',
-      'GameType.speedTyping': '빠른 타자',
-      'GameType.leftRight': '좌우 구분',
-      'GameType.mathSpeed': '수학 스피드',
-      'GameType.idioms': '사자성어',
-      'GameType.jumpGame': '점프 게임',
-      'GameType.archery': '양궁',
-      'GameType.numberSum': '숫자 합',
-      'GameType.escapeRoom': '방탈출',
-      'GameType.avoidDog': '강아지 피하기',
-      'GameType.colorSwitch': '컬러 스위치',
-      'GameType.koreanWordle': '한글 워들',
-      'GameType.oddOneOut': '다른 것 찾기',
+      'reflexes': '순발력 게임',
+      'memory': '기억력 게임',
+      'bombPassing': '폭탄 돌리기',
+      'findDifference': '틀린그림찾기',
+      'oxQuiz': 'OX 퀴즈',
+      'landmark': '랜드마크 퀴즈',
+      'tileMatching': '타일 매칭',
+      'speedTyping': '빠른 타자',
+      'leftRight': '좌우 구분',
+      'mathSpeed': '수학 스피드',
+      'idioms': '사자성어',
+      'jumpGame': '점프 게임',
+      'archery': '양궁',
+      'numberSum': '숫자 합',
+      'escapeRoom': '방탈출',
+      'avoidDog': '강아지 피하기',
+      'colorSwitch': '컬러 스위치',
+      'koreanWordle': '한글 워들',
+      'oddOneOut': '다른 것 찾기',
     };
-    return typeMap[gameType] ?? gameType;
+    return typeMap[typeName] ?? typeName;
   }
 }
 

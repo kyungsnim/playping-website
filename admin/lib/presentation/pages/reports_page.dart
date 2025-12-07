@@ -18,7 +18,7 @@ class ReportsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Report Management'),
+        title: const Text('신고 관리'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -26,7 +26,7 @@ class ReportsPage extends ConsumerWidget {
               ref.invalidate(reportStatsProvider);
               ref.invalidate(reportsProvider);
             },
-            tooltip: 'Refresh',
+            tooltip: '새로고침',
           ),
           const SizedBox(width: 8),
         ],
@@ -38,7 +38,7 @@ class ReportsPage extends ConsumerWidget {
           children: [
             // Report Stats Overview
             Text(
-              'Report Overview',
+              '신고 현황',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -50,25 +50,25 @@ class ReportsPage extends ConsumerWidget {
                 runSpacing: 16,
                 children: [
                   StatCard(
-                    title: 'Total Reports',
+                    title: '전체 신고',
                     value: stats.totalReports.toString(),
                     icon: Icons.report,
                     color: Colors.blue,
                   ),
                   StatCard(
-                    title: 'Pending',
+                    title: '대기 중',
                     value: stats.pendingReports.toString(),
                     icon: Icons.pending_actions,
                     color: Colors.orange,
                   ),
                   StatCard(
-                    title: 'Reviewed',
+                    title: '처리 완료',
                     value: stats.reviewedReports.toString(),
                     icon: Icons.check_circle,
                     color: Colors.green,
                   ),
                   StatCard(
-                    title: 'Dismissed',
+                    title: '기각',
                     value: stats.dismissedReports.toString(),
                     icon: Icons.cancel,
                     color: Colors.grey,
@@ -94,7 +94,7 @@ class ReportsPage extends ConsumerWidget {
             Row(
               children: [
                 Text(
-                  'Reports',
+                  '신고 목록',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -104,19 +104,19 @@ class ReportsPage extends ConsumerWidget {
                   segments: const [
                     ButtonSegment<ReportStatus?>(
                       value: null,
-                      label: Text('All'),
+                      label: Text('전체'),
                     ),
                     ButtonSegment<ReportStatus?>(
                       value: ReportStatus.pending,
-                      label: Text('Pending'),
+                      label: Text('대기 중'),
                     ),
                     ButtonSegment<ReportStatus?>(
                       value: ReportStatus.reviewed,
-                      label: Text('Reviewed'),
+                      label: Text('처리 완료'),
                     ),
                     ButtonSegment<ReportStatus?>(
                       value: ReportStatus.dismissed,
-                      label: Text('Dismissed'),
+                      label: Text('기각'),
                     ),
                   ],
                   selected: {selectedStatus},
@@ -135,7 +135,7 @@ class ReportsPage extends ConsumerWidget {
                   ? const Card(
                       child: Padding(
                         padding: EdgeInsets.all(32),
-                        child: Center(child: Text('No reports found')),
+                        child: Center(child: Text('신고 내역이 없습니다')),
                       ),
                     )
                   : Card(
@@ -143,12 +143,12 @@ class ReportsPage extends ConsumerWidget {
                         padding: const EdgeInsets.all(16),
                         child: DataTable(
                           columns: const [
-                            DataColumn(label: Text('Date')),
-                            DataColumn(label: Text('Reporter')),
-                            DataColumn(label: Text('Reported User')),
-                            DataColumn(label: Text('Reason')),
-                            DataColumn(label: Text('Status')),
-                            DataColumn(label: Text('Actions')),
+                            DataColumn(label: Text('날짜')),
+                            DataColumn(label: Text('신고자')),
+                            DataColumn(label: Text('피신고자')),
+                            DataColumn(label: Text('사유')),
+                            DataColumn(label: Text('상태')),
+                            DataColumn(label: Text('조치')),
                           ],
                           rows: reportList
                               .map((report) => _buildReportRow(context, ref, report))
@@ -233,19 +233,19 @@ class ReportsPage extends ConsumerWidget {
                       icon: const Icon(Icons.check, color: Colors.green),
                       onPressed: () =>
                           _showActionDialog(context, ref, report, true),
-                      tooltip: 'Mark as Reviewed',
+                      tooltip: '처리 완료',
                     ),
                     IconButton(
                       icon: const Icon(Icons.close, color: Colors.red),
                       onPressed: () =>
                           _showActionDialog(context, ref, report, false),
-                      tooltip: 'Dismiss',
+                      tooltip: '기각',
                     ),
                   ],
                 )
               : report.action != null
                   ? Tooltip(
-                      message: 'Action: ${report.action}',
+                      message: '조치 내용: ${report.action}',
                       child: const Icon(Icons.info_outline, color: Colors.grey),
                     )
                   : const SizedBox.shrink(),
@@ -262,17 +262,17 @@ class ReportsPage extends ConsumerWidget {
     switch (status) {
       case ReportStatus.pending:
         color = Colors.orange;
-        label = 'Pending';
+        label = '대기 중';
         icon = Icons.pending_actions;
         break;
       case ReportStatus.reviewed:
         color = Colors.green;
-        label = 'Reviewed';
+        label = '처리 완료';
         icon = Icons.check_circle;
         break;
       case ReportStatus.dismissed:
         color = Colors.grey;
-        label = 'Dismissed';
+        label = '기각';
         icon = Icons.cancel;
         break;
     }
@@ -293,26 +293,26 @@ class ReportsPage extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(isReview ? 'Review Report' : 'Dismiss Report'),
+        title: Text(isReview ? '신고 처리' : '신고 기각'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Reporter: ${report.reporterNickname}'),
-            Text('Reported: ${report.reportedUserNickname}'),
-            Text('Reason: ${report.reason}'),
+            Text('신고자: ${report.reporterNickname}'),
+            Text('피신고자: ${report.reportedUserNickname}'),
+            Text('사유: ${report.reason}'),
             if (report.description != null) ...[
               const SizedBox(height: 8),
-              Text('Description: ${report.description}'),
+              Text('상세 내용: ${report.description}'),
             ],
             const SizedBox(height: 16),
             TextField(
               controller: actionController,
               decoration: InputDecoration(
-                labelText: isReview ? 'Action Taken' : 'Reason for Dismissal',
+                labelText: isReview ? '조치 내용' : '기각 사유',
                 hintText: isReview
-                    ? 'e.g., Warning issued, Account suspended'
-                    : 'e.g., Insufficient evidence, False report',
+                    ? '예: 경고 조치, 계정 정지'
+                    : '예: 증거 부족, 허위 신고',
                 border: const OutlineInputBorder(),
               ),
               maxLines: 3,
@@ -322,7 +322,7 @@ class ReportsPage extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: const Text('취소'),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -348,8 +348,8 @@ class ReportsPage extends ConsumerWidget {
                   SnackBar(
                     content: Text(
                       isReview
-                          ? 'Report marked as reviewed'
-                          : 'Report dismissed',
+                          ? '신고가 처리되었습니다'
+                          : '신고가 기각되었습니다',
                     ),
                     backgroundColor: Colors.green,
                   ),
@@ -359,7 +359,7 @@ class ReportsPage extends ConsumerWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: isReview ? Colors.green : Colors.grey,
             ),
-            child: Text(isReview ? 'Review' : 'Dismiss'),
+            child: Text(isReview ? '처리' : '기각'),
           ),
         ],
       ),
@@ -375,11 +375,11 @@ class ReportsPage extends ConsumerWidget {
           children: [
             Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
             const SizedBox(height: 16),
-            Text('Error: $error'),
+            Text('오류: $error'),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: onRetry,
-              child: const Text('Retry'),
+              child: const Text('다시 시도'),
             ),
           ],
         ),

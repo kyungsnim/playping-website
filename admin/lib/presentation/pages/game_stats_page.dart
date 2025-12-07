@@ -19,7 +19,7 @@ class GameStatsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Game Statistics'),
+        title: const Text('게임 통계'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -29,7 +29,7 @@ class GameStatsPage extends ConsumerWidget {
               ref.invalidate(dailyGamesProvider(30));
               ref.invalidate(hourlyGamesProvider);
             },
-            tooltip: 'Refresh',
+            tooltip: '새로고침',
           ),
           const SizedBox(width: 8),
         ],
@@ -41,7 +41,7 @@ class GameStatsPage extends ConsumerWidget {
           children: [
             // Game Stats Overview
             Text(
-              'Game Overview',
+              '게임 현황',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -53,55 +53,55 @@ class GameStatsPage extends ConsumerWidget {
                 runSpacing: 16,
                 children: [
                   StatCard(
-                    title: 'Total Rooms',
+                    title: '전체 방',
                     value: _formatNumber(stats.totalGamesPlayed),
                     icon: Icons.games,
                     color: Colors.blue,
                   ),
                   StatCard(
-                    title: 'Today',
+                    title: '오늘',
                     value: _formatNumber(stats.todayGamesPlayed),
                     icon: Icons.today,
                     color: Colors.green,
                   ),
                   StatCard(
-                    title: 'This Week',
+                    title: '이번 주',
                     value: _formatNumber(stats.weekGamesPlayed),
                     icon: Icons.date_range,
                     color: Colors.orange,
                   ),
                   StatCard(
-                    title: 'This Month',
+                    title: '이번 달',
                     value: _formatNumber(stats.monthGamesPlayed),
                     icon: Icons.calendar_month,
                     color: Colors.purple,
                   ),
                   StatCard(
-                    title: 'Active Rooms',
+                    title: '활성 방',
                     value: stats.activeRooms.toString(),
                     icon: Icons.meeting_room,
                     color: Colors.teal,
                   ),
                   StatCard(
-                    title: 'Avg Players/Game',
+                    title: '평균 플레이어/게임',
                     value: stats.avgPlayersPerGame.toStringAsFixed(1),
                     icon: Icons.people,
                     color: Colors.indigo,
                   ),
                   StatCard(
-                    title: 'Single Mode (100)',
+                    title: '싱글 모드 (100)',
                     value: '${stats.singleModeRooms}',
                     icon: Icons.looks_one,
                     color: Colors.cyan,
                   ),
                   StatCard(
-                    title: 'Multi Mode (100)',
+                    title: '멀티 모드 (100)',
                     value: '${stats.multiModeRooms}',
                     icon: Icons.format_list_numbered,
                     color: Colors.deepOrange,
                   ),
                   StatCard(
-                    title: 'Individual Games (100)',
+                    title: '개별 게임 (100)',
                     value: '${stats.totalIndividualGames}',
                     icon: Icons.sports_esports,
                     color: Colors.pink,
@@ -125,7 +125,7 @@ class GameStatsPage extends ConsumerWidget {
 
             // Daily Games Chart
             Text(
-              'Daily Games (Last 30 Days)',
+              '일별 게임 (최근 30일)',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -160,7 +160,7 @@ class GameStatsPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Game Type Distribution',
+                        '게임 유형별 분포',
                         style:
                             Theme.of(context).textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.bold,
@@ -190,7 +190,7 @@ class GameStatsPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Today\'s Hourly Distribution',
+                        '오늘의 시간대별 분포',
                         style:
                             Theme.of(context).textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.bold,
@@ -223,7 +223,7 @@ class GameStatsPage extends ConsumerWidget {
   Widget _buildDailyGamesChart(BuildContext context, List<DailyGameData> data) {
     if (data.isEmpty) {
       return const Card(
-        child: Center(child: Text('No data available')),
+        child: Center(child: Text('데이터가 없습니다')),
       );
     }
 
@@ -327,7 +327,7 @@ class GameStatsPage extends ConsumerWidget {
       return const Card(
         child: Padding(
           padding: EdgeInsets.all(32),
-          child: Center(child: Text('No data available')),
+          child: Center(child: Text('데이터가 없습니다')),
         ),
       );
     }
@@ -417,7 +417,7 @@ class GameStatsPage extends ConsumerWidget {
       return const Card(
         child: Padding(
           padding: EdgeInsets.all(32),
-          child: Center(child: Text('No data available')),
+          child: Center(child: Text('데이터가 없습니다')),
         ),
       );
     }
@@ -507,11 +507,11 @@ class GameStatsPage extends ConsumerWidget {
           children: [
             Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
             const SizedBox(height: 16),
-            Text('Error: $error'),
+            Text('오류: $error'),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: onRetry,
-              child: const Text('Retry'),
+              child: const Text('다시 시도'),
             ),
           ],
         ),

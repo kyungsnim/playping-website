@@ -98,3 +98,69 @@ class DailySignupData {
     required this.count,
   });
 }
+
+/// User model for admin user management
+class UserModel {
+  final String id;
+  final String? email;
+  final String nickname;
+  final String? provider;
+  final String? countryCode;
+  final String? country;
+  final String? administrativeArea;
+  final String? locality;
+  final DateTime? createdAt;
+  final DateTime? lastLoginAt;
+  final int gamesPlayed;
+  final bool isBlocked;
+  final int coins;
+  final bool adsRemoved;
+  final DateTime? adsRemovedAt;
+  final bool isAdmin;
+
+  const UserModel({
+    required this.id,
+    this.email,
+    required this.nickname,
+    this.provider,
+    this.countryCode,
+    this.country,
+    this.administrativeArea,
+    this.locality,
+    this.createdAt,
+    this.lastLoginAt,
+    this.gamesPlayed = 0,
+    this.isBlocked = false,
+    this.coins = 0,
+    this.adsRemoved = false,
+    this.adsRemovedAt,
+    this.isAdmin = false,
+  });
+
+  String get displayProvider {
+    switch (provider?.toLowerCase()) {
+      case 'google.com':
+      case 'google':
+        return 'Google';
+      case 'apple.com':
+      case 'apple':
+        return 'Apple';
+      case 'kakao':
+        return 'Kakao';
+      case 'anonymous':
+        return 'Guest';
+      default:
+        return provider ?? 'Unknown';
+    }
+  }
+
+  String get location {
+    final parts = <String>[];
+    if (locality != null && locality!.isNotEmpty) parts.add(locality!);
+    if (administrativeArea != null && administrativeArea!.isNotEmpty) {
+      parts.add(administrativeArea!);
+    }
+    if (country != null && country!.isNotEmpty) parts.add(country!);
+    return parts.isEmpty ? 'Unknown' : parts.join(', ');
+  }
+}

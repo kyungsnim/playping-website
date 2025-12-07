@@ -150,10 +150,10 @@ class GameRepository {
     final activeRooms =
         (waitingRoomsSnapshot.count ?? 0) + (playingRoomsSnapshot.count ?? 0);
 
+    // Get recent 100 finished games (without orderBy to avoid composite index requirement)
     final recentGamesSnapshot = await _roomsCollection
         .where(AdminConstants.roomStatus,
             isEqualTo: AdminConstants.roomStatusFinished)
-        .orderBy(AdminConstants.roomFinishedAt, descending: true)
         .limit(100)
         .get();
 
@@ -307,13 +307,10 @@ class GameRepository {
         }
       }
     } else {
-      // Fallback: direct query
+      // Fallback: direct query (get all finished rooms and filter in memory)
       final snapshot = await _roomsCollection
           .where(AdminConstants.roomStatus,
               isEqualTo: AdminConstants.roomStatusFinished)
-          .where(AdminConstants.roomFinishedAt,
-              isGreaterThanOrEqualTo: Timestamp.fromDate(startDate))
-          .orderBy(AdminConstants.roomFinishedAt)
           .get();
 
       for (final doc in snapshot.docs) {
@@ -321,9 +318,12 @@ class GameRepository {
             doc.data()[AdminConstants.roomFinishedAt] as Timestamp?;
         if (finishedAt != null) {
           final date = finishedAt.toDate();
-          final key =
-              '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-          dailyMap[key] = (dailyMap[key] ?? 0) + 1;
+          // Only count if within our date range
+          if (!date.isBefore(startDate)) {
+            final key =
+                '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+            dailyMap[key] = (dailyMap[key] ?? 0) + 1;
+          }
         }
       }
     }
@@ -343,19 +343,16 @@ class GameRepository {
   }
 
   /// Get hourly game distribution (for today)
-  /// Note: This still requires direct query as hourly data is not pre-aggregated
+  /// Note: This queries all finished rooms and filters in memory to avoid index requirement
   Future<List<HourlyGameData>> getHourlyGames() async {
     final now = DateTime.now();
     final todayStart = DateTime(now.year, now.month, now.day);
     final todayEnd = todayStart.add(const Duration(days: 1));
 
+    // Get all finished rooms and filter in memory
     final snapshot = await _roomsCollection
         .where(AdminConstants.roomStatus,
             isEqualTo: AdminConstants.roomStatusFinished)
-        .where(AdminConstants.roomFinishedAt,
-            isGreaterThanOrEqualTo: Timestamp.fromDate(todayStart))
-        .where(AdminConstants.roomFinishedAt,
-            isLessThan: Timestamp.fromDate(todayEnd))
         .get();
 
     final hourlyMap = <int, int>{};
@@ -367,8 +364,12 @@ class GameRepository {
       final finishedAt =
           doc.data()[AdminConstants.roomFinishedAt] as Timestamp?;
       if (finishedAt != null) {
-        final hour = finishedAt.toDate().hour;
-        hourlyMap[hour] = (hourlyMap[hour] ?? 0) + 1;
+        final date = finishedAt.toDate();
+        // Only count if today
+        if (!date.isBefore(todayStart) && date.isBefore(todayEnd)) {
+          final hour = date.hour;
+          hourlyMap[hour] = (hourlyMap[hour] ?? 0) + 1;
+        }
       }
     }
 

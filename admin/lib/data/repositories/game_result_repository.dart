@@ -13,21 +13,40 @@ class GameResultRepository {
       _firestore.collection('rooms');
 
   /// Get finished games with pagination (ordered by finishedAt descending)
+  /// Note: Uses in-memory sorting to avoid composite index requirement
   Future<List<GameResultModel>> getFinishedGames({
     int limit = 10,
     DocumentSnapshot? startAfter,
   }) async {
-    Query<Map<String, dynamic>> query = _roomsCollection
+    // Get all finished rooms and sort in memory
+    final snapshot = await _roomsCollection
         .where('status', isEqualTo: 'RoomStatus.finished')
-        .orderBy('finishedAt', descending: true);
+        .get();
 
+    // Convert to models and sort by finishedAt descending
+    var results = snapshot.docs
+        .map((doc) => GameResultModel.fromFirestore(doc))
+        .toList();
+    results.sort((a, b) => b.finishedAt.compareTo(a.finishedAt));
+
+    // Handle pagination manually
     if (startAfter != null) {
-      query = query.startAfterDocument(startAfter);
+      final startIndex = results.indexWhere(
+        (r) => r.roomId == startAfter.id,
+      );
+      if (startIndex >= 0 && startIndex + 1 < results.length) {
+        results = results.sublist(startIndex + 1);
+      } else {
+        return [];
+      }
     }
 
-    final snapshot = await query.limit(limit).get();
+    // Apply limit
+    if (results.length > limit) {
+      results = results.sublist(0, limit);
+    }
 
-    return snapshot.docs.map((doc) => GameResultModel.fromFirestore(doc)).toList();
+    return results;
   }
 
   /// Get detailed results for a specific game

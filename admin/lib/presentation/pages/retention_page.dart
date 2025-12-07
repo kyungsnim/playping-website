@@ -14,12 +14,12 @@ class RetentionPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Retention Analysis'),
+        title: const Text('리텐션 분석'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => ref.invalidate(retentionDataProvider(14)),
-            tooltip: 'Refresh',
+            tooltip: '새로고침',
           ),
           const SizedBox(width: 8),
         ],
@@ -31,14 +31,14 @@ class RetentionPage extends ConsumerWidget {
           children: [
             // Header
             Text(
-              'Cohort Retention Analysis',
+              '코호트 리텐션 분석',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Track how users return to the app over time based on their signup date.',
+              '가입일 기준으로 사용자가 앱에 다시 방문하는 비율을 추적합니다.',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.grey[600],
                   ),
@@ -59,12 +59,12 @@ class RetentionPage extends ConsumerWidget {
                     children: [
                       Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
                       const SizedBox(height: 16),
-                      Text('Error: $error'),
+                      Text('오류: $error'),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () =>
                             ref.invalidate(retentionDataProvider(14)),
-                        child: const Text('Retry'),
+                        child: const Text('다시 시도'),
                       ),
                     ],
                   ),
@@ -82,7 +82,7 @@ class RetentionPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'How to Read This Table',
+                      '테이블 읽는 방법',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -91,33 +91,33 @@ class RetentionPage extends ConsumerWidget {
                     _buildLegendItem(
                       context,
                       'D1',
-                      'Users who returned 1+ days after signup',
+                      '가입 후 1일 이상 지나서 재방문한 사용자',
                     ),
                     _buildLegendItem(
                       context,
                       'D3',
-                      'Users who returned 3+ days after signup',
+                      '가입 후 3일 이상 지나서 재방문한 사용자',
                     ),
                     _buildLegendItem(
                       context,
                       'D7',
-                      'Users who returned 7+ days after signup',
+                      '가입 후 7일 이상 지나서 재방문한 사용자',
                     ),
                     _buildLegendItem(
                       context,
                       'D14',
-                      'Users who returned 14+ days after signup',
+                      '가입 후 14일 이상 지나서 재방문한 사용자',
                     ),
                     _buildLegendItem(
                       context,
                       'D30',
-                      'Users who returned 30+ days after signup',
+                      '가입 후 30일 이상 지나서 재방문한 사용자',
                     ),
                     const SizedBox(height: 16),
                     const Divider(),
                     const SizedBox(height: 16),
                     Text(
-                      'Color Legend',
+                      '색상 범례',
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
@@ -126,7 +126,7 @@ class RetentionPage extends ConsumerWidget {
                       runSpacing: 8,
                       children: [
                         _buildColorLegendItem(
-                            context, _getRetentionColor(80), '80%+'),
+                            context, _getRetentionColor(80), '80% 이상'),
                         _buildColorLegendItem(
                             context, _getRetentionColor(60), '60-79%'),
                         _buildColorLegendItem(
@@ -134,7 +134,7 @@ class RetentionPage extends ConsumerWidget {
                         _buildColorLegendItem(
                             context, _getRetentionColor(20), '20-39%'),
                         _buildColorLegendItem(
-                            context, _getRetentionColor(10), '<20%'),
+                            context, _getRetentionColor(10), '20% 미만'),
                       ],
                     ),
                   ],
@@ -153,7 +153,7 @@ class RetentionPage extends ConsumerWidget {
         child: Padding(
           padding: EdgeInsets.all(32),
           child: Center(
-            child: Text('No retention data available. Need at least 30 days of user data.'),
+            child: Text('리텐션 데이터가 없습니다. 최소 30일 이상의 사용자 데이터가 필요합니다.'),
           ),
         ),
       );
@@ -167,8 +167,8 @@ class RetentionPage extends ConsumerWidget {
           child: DataTable(
             headingRowColor: WidgetStateProperty.all(Colors.grey[100]),
             columns: const [
-              DataColumn(label: Text('Cohort Date')),
-              DataColumn(label: Text('Users'), numeric: true),
+              DataColumn(label: Text('코호트 날짜')),
+              DataColumn(label: Text('사용자'), numeric: true),
               DataColumn(label: Text('D1'), numeric: true),
               DataColumn(label: Text('D3'), numeric: true),
               DataColumn(label: Text('D7'), numeric: true),

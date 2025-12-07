@@ -321,4 +321,174 @@ class UserRepository {
         return provider;
     }
   }
+
+  /// Get recent users with pagination (ordered by createdAt descending)
+  Future<UserListResult> getRecentUsers({
+    int limit = 10,
+    DocumentSnapshot? startAfter,
+  }) async {
+    Query<Map<String, dynamic>> query = _usersCollection
+        .orderBy(AdminConstants.userCreatedAt, descending: true)
+        .limit(limit);
+
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
+
+    final snapshot = await query.get();
+
+    final users = snapshot.docs.map((doc) {
+      final data = doc.data();
+      return UserModel(
+        id: doc.id,
+        email: data[AdminConstants.userEmail] as String?,
+        nickname: data[AdminConstants.userNickname] as String? ?? 'Unknown',
+        provider: data[AdminConstants.userProvider] as String?,
+        countryCode: data[AdminConstants.userCountryCode] as String?,
+        country: data[AdminConstants.userCountry] as String?,
+        administrativeArea: data[AdminConstants.userAdministrativeArea] as String?,
+        locality: data[AdminConstants.userLocality] as String?,
+        createdAt: (data[AdminConstants.userCreatedAt] as Timestamp?)?.toDate(),
+        lastLoginAt: (data[AdminConstants.userLastLoginAt] as Timestamp?)?.toDate(),
+        gamesPlayed: data['gamesCompleted'] as int? ?? 0,
+        isBlocked: data[AdminConstants.userIsBlocked] as bool? ?? false,
+        coins: data[AdminConstants.userCoins] as int? ?? 0,
+        adsRemoved: data[AdminConstants.userAdsRemoved] as bool? ?? false,
+        adsRemovedAt: (data[AdminConstants.userAdsRemovedAt] as Timestamp?)?.toDate(),
+        isAdmin: data[AdminConstants.userIsAdmin] as bool? ?? false,
+      );
+    }).toList();
+
+    return UserListResult(
+      users: users,
+      lastDocument: snapshot.docs.isNotEmpty ? snapshot.docs.last : null,
+      hasMore: snapshot.docs.length == limit,
+    );
+  }
+
+  /// Search users by nickname or email
+  Future<List<UserModel>> searchUsers(String query) async {
+    if (query.isEmpty) return [];
+
+    final queryLower = query.toLowerCase();
+
+    // Firestore doesn't support case-insensitive search directly,
+    // so we fetch and filter in memory for small datasets
+    // For production, consider using Algolia or similar search service
+    final snapshot = await _usersCollection.limit(500).get();
+
+    return snapshot.docs
+        .where((doc) {
+          final data = doc.data();
+          final nickname = (data[AdminConstants.userNickname] as String?)?.toLowerCase() ?? '';
+          final email = (data[AdminConstants.userEmail] as String?)?.toLowerCase() ?? '';
+          return nickname.contains(queryLower) || email.contains(queryLower);
+        })
+        .take(20)
+        .map((doc) {
+          final data = doc.data();
+          return UserModel(
+            id: doc.id,
+            email: data[AdminConstants.userEmail] as String?,
+            nickname: data[AdminConstants.userNickname] as String? ?? 'Unknown',
+            provider: data[AdminConstants.userProvider] as String?,
+            countryCode: data[AdminConstants.userCountryCode] as String?,
+            country: data[AdminConstants.userCountry] as String?,
+            administrativeArea: data[AdminConstants.userAdministrativeArea] as String?,
+            locality: data[AdminConstants.userLocality] as String?,
+            createdAt: (data[AdminConstants.userCreatedAt] as Timestamp?)?.toDate(),
+            lastLoginAt: (data[AdminConstants.userLastLoginAt] as Timestamp?)?.toDate(),
+            gamesPlayed: data['gamesCompleted'] as int? ?? 0,
+            isBlocked: data[AdminConstants.userIsBlocked] as bool? ?? false,
+            coins: data[AdminConstants.userCoins] as int? ?? 0,
+            adsRemoved: data[AdminConstants.userAdsRemoved] as bool? ?? false,
+            adsRemovedAt: (data[AdminConstants.userAdsRemovedAt] as Timestamp?)?.toDate(),
+            isAdmin: data[AdminConstants.userIsAdmin] as bool? ?? false,
+          );
+        })
+        .toList();
+  }
+
+  /// Get user by ID
+  Future<UserModel?> getUserById(String userId) async {
+    final doc = await _usersCollection.doc(userId).get();
+    if (!doc.exists) return null;
+
+    final data = doc.data()!;
+    return UserModel(
+      id: doc.id,
+      email: data[AdminConstants.userEmail] as String?,
+      nickname: data[AdminConstants.userNickname] as String? ?? 'Unknown',
+      provider: data[AdminConstants.userProvider] as String?,
+      countryCode: data[AdminConstants.userCountryCode] as String?,
+      country: data[AdminConstants.userCountry] as String?,
+      administrativeArea: data[AdminConstants.userAdministrativeArea] as String?,
+      locality: data[AdminConstants.userLocality] as String?,
+      createdAt: (data[AdminConstants.userCreatedAt] as Timestamp?)?.toDate(),
+      lastLoginAt: (data[AdminConstants.userLastLoginAt] as Timestamp?)?.toDate(),
+      gamesPlayed: data['gamesCompleted'] as int? ?? 0,
+      isBlocked: data[AdminConstants.userIsBlocked] as bool? ?? false,
+      coins: data[AdminConstants.userCoins] as int? ?? 0,
+      adsRemoved: data[AdminConstants.userAdsRemoved] as bool? ?? false,
+      adsRemovedAt: (data[AdminConstants.userAdsRemovedAt] as Timestamp?)?.toDate(),
+      isAdmin: data[AdminConstants.userIsAdmin] as bool? ?? false,
+    );
+  }
+
+  /// Add coins to user
+  Future<void> addCoins(String userId, int amount) async {
+    final docRef = _usersCollection.doc(userId);
+    final doc = await docRef.get();
+    if (!doc.exists) return;
+
+    final currentCoins = doc.data()?[AdminConstants.userCoins] as int? ?? 0;
+    await docRef.update({
+      AdminConstants.userCoins: currentCoins + amount,
+    });
+  }
+
+  /// Set coins for user
+  Future<void> setCoins(String userId, int amount) async {
+    await _usersCollection.doc(userId).update({
+      AdminConstants.userCoins: amount,
+    });
+  }
+
+  /// Toggle ads removed status for user
+  Future<void> toggleAdsRemoved(String userId, bool adsRemoved) async {
+    final updateData = <String, dynamic>{
+      AdminConstants.userAdsRemoved: adsRemoved,
+    };
+    if (adsRemoved) {
+      updateData[AdminConstants.userAdsRemovedAt] = FieldValue.serverTimestamp();
+    }
+    await _usersCollection.doc(userId).update(updateData);
+  }
+
+  /// Toggle admin status for user
+  Future<void> toggleAdmin(String userId, bool isAdmin) async {
+    await _usersCollection.doc(userId).update({
+      AdminConstants.userIsAdmin: isAdmin,
+    });
+  }
+
+  /// Toggle blocked status for user
+  Future<void> toggleBlocked(String userId, bool isBlocked) async {
+    await _usersCollection.doc(userId).update({
+      AdminConstants.userIsBlocked: isBlocked,
+    });
+  }
+}
+
+/// Result class for paginated user list
+class UserListResult {
+  final List<UserModel> users;
+  final DocumentSnapshot? lastDocument;
+  final bool hasMore;
+
+  const UserListResult({
+    required this.users,
+    this.lastDocument,
+    required this.hasMore,
+  });
 }

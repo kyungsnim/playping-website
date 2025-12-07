@@ -7,6 +7,7 @@ import '../presentation/pages/game_stats_page.dart';
 import '../presentation/pages/login_page.dart';
 import '../presentation/pages/reports_page.dart';
 import '../presentation/pages/retention_page.dart';
+import '../presentation/pages/user_management_page.dart';
 import '../presentation/pages/users_analytics_page.dart';
 import '../presentation/providers/auth_provider.dart';
 import '../presentation/widgets/admin_shell.dart';
@@ -47,6 +48,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/users',
             builder: (context, state) => const UsersAnalyticsPage(),
+          ),
+          GoRoute(
+            path: '/user-management',
+            builder: (context, state) => const UserManagementPage(),
           ),
           GoRoute(
             path: '/retention',

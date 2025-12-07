@@ -313,52 +313,68 @@ class _GameResultCard extends StatelessWidget {
   }
 
   IconData _getGameTypeIcon(String gameType) {
+    // 'GameType.' 접두사 제거 및 snake_case를 camelCase로 변환
+    String typeName = gameType.replaceFirst('GameType.', '');
+    if (typeName.contains('_')) {
+      final parts = typeName.split('_');
+      typeName = parts.first +
+          parts.skip(1).map((p) => p.isEmpty ? '' : p[0].toUpperCase() + p.substring(1)).join();
+    }
+
     final iconMap = {
-      'GameType.reflexes': Icons.flash_on,
-      'GameType.memory': Icons.psychology,
-      'GameType.bombPassing': Icons.whatshot,
-      'GameType.findDifference': Icons.compare,
-      'GameType.oxQuiz': Icons.check_circle_outline,
-      'GameType.landmark': Icons.location_city,
-      'GameType.tileMatching': Icons.grid_view,
-      'GameType.speedTyping': Icons.keyboard,
-      'GameType.leftRight': Icons.swap_horiz,
-      'GameType.mathSpeed': Icons.calculate,
-      'GameType.idioms': Icons.menu_book,
-      'GameType.jumpGame': Icons.sports_gymnastics,
-      'GameType.archery': Icons.gps_fixed,
-      'GameType.numberSum': Icons.numbers,
-      'GameType.escapeRoom': Icons.door_front_door,
-      'GameType.avoidDog': Icons.pets,
-      'GameType.colorSwitch': Icons.palette,
-      'GameType.koreanWordle': Icons.abc,
-      'GameType.oddOneOut': Icons.search,
+      'reflexes': Icons.flash_on,
+      'memory': Icons.psychology,
+      'bombPassing': Icons.whatshot,
+      'findDifference': Icons.compare,
+      'oxQuiz': Icons.check_circle_outline,
+      'landmark': Icons.location_city,
+      'tileMatching': Icons.grid_view,
+      'speedTyping': Icons.keyboard,
+      'leftRight': Icons.swap_horiz,
+      'mathSpeed': Icons.calculate,
+      'idioms': Icons.menu_book,
+      'jumpGame': Icons.sports_gymnastics,
+      'archery': Icons.gps_fixed,
+      'numberSum': Icons.numbers,
+      'escapeRoom': Icons.door_front_door,
+      'avoidDog': Icons.pets,
+      'colorSwitch': Icons.palette,
+      'koreanWordle': Icons.abc,
+      'oddOneOut': Icons.search,
     };
-    return iconMap[gameType] ?? Icons.games;
+    return iconMap[typeName] ?? Icons.games;
   }
 
   Color _getGameTypeColor(String gameType) {
+    // 'GameType.' 접두사 제거 및 snake_case를 camelCase로 변환
+    String typeName = gameType.replaceFirst('GameType.', '');
+    if (typeName.contains('_')) {
+      final parts = typeName.split('_');
+      typeName = parts.first +
+          parts.skip(1).map((p) => p.isEmpty ? '' : p[0].toUpperCase() + p.substring(1)).join();
+    }
+
     final colorMap = {
-      'GameType.reflexes': Colors.orange,
-      'GameType.memory': Colors.purple,
-      'GameType.bombPassing': Colors.red,
-      'GameType.findDifference': Colors.green,
-      'GameType.oxQuiz': Colors.blue,
-      'GameType.landmark': Colors.teal,
-      'GameType.tileMatching': Colors.indigo,
-      'GameType.speedTyping': Colors.cyan,
-      'GameType.leftRight': Colors.pink,
-      'GameType.mathSpeed': Colors.amber,
-      'GameType.idioms': Colors.brown,
-      'GameType.jumpGame': Colors.lightGreen,
-      'GameType.archery': Colors.deepOrange,
-      'GameType.numberSum': Colors.lime,
-      'GameType.escapeRoom': Colors.blueGrey,
-      'GameType.avoidDog': Colors.yellow,
-      'GameType.colorSwitch': Colors.deepPurple,
-      'GameType.koreanWordle': Colors.lightBlue,
-      'GameType.oddOneOut': Colors.redAccent,
+      'reflexes': Colors.orange,
+      'memory': Colors.purple,
+      'bombPassing': Colors.red,
+      'findDifference': Colors.green,
+      'oxQuiz': Colors.blue,
+      'landmark': Colors.teal,
+      'tileMatching': Colors.indigo,
+      'speedTyping': Colors.cyan,
+      'leftRight': Colors.pink,
+      'mathSpeed': Colors.amber,
+      'idioms': Colors.brown,
+      'jumpGame': Colors.lightGreen,
+      'archery': Colors.deepOrange,
+      'numberSum': Colors.lime,
+      'escapeRoom': Colors.blueGrey,
+      'avoidDog': Colors.yellow,
+      'colorSwitch': Colors.deepPurple,
+      'koreanWordle': Colors.lightBlue,
+      'oddOneOut': Colors.redAccent,
     };
-    return colorMap[gameType] ?? Colors.grey;
+    return colorMap[typeName] ?? Colors.grey;
   }
 }

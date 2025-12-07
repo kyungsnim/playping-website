@@ -17,7 +17,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Users Analytics'),
+        title: const Text('사용자 통계'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -26,7 +26,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
               ref.invalidate(providerStatsProvider);
               ref.invalidate(regionStatsProvider(selectedCountry));
             },
-            tooltip: 'Refresh',
+            tooltip: '새로고침',
           ),
           const SizedBox(width: 8),
         ],
@@ -38,7 +38,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
           children: [
             // Country Stats Section
             Text(
-              'Users by Country',
+              '국가별 사용자',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -63,7 +63,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
             Row(
               children: [
                 Text(
-                  'Users by Region',
+                  '지역별 사용자',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -72,11 +72,11 @@ class UsersAnalyticsPage extends ConsumerWidget {
                 countryStats.when(
                   data: (countries) => DropdownButton<String?>(
                     value: selectedCountry,
-                    hint: const Text('All Countries'),
+                    hint: const Text('전체 국가'),
                     items: [
                       const DropdownMenuItem<String?>(
                         value: null,
-                        child: Text('All Countries'),
+                        child: Text('전체 국가'),
                       ),
                       ...countries.map((c) => DropdownMenuItem<String?>(
                             value: c.countryCode,
@@ -110,7 +110,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
 
             // Auth Provider Stats Section
             Text(
-              'Users by Auth Provider',
+              '로그인 방식별 사용자',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -140,7 +140,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
       return const Card(
         child: Padding(
           padding: EdgeInsets.all(32),
-          child: Center(child: Text('No data available')),
+          child: Center(child: Text('데이터가 없습니다')),
         ),
       );
     }
@@ -189,8 +189,8 @@ class UsersAnalyticsPage extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               child: DataTable(
                 columns: const [
-                  DataColumn(label: Text('Country')),
-                  DataColumn(label: Text('Users'), numeric: true),
+                  DataColumn(label: Text('국가')),
+                  DataColumn(label: Text('사용자'), numeric: true),
                   DataColumn(label: Text('%'), numeric: true),
                 ],
                 rows: data
@@ -239,7 +239,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
       return const Card(
         child: Padding(
           padding: EdgeInsets.all(32),
-          child: Center(child: Text('No data available')),
+          child: Center(child: Text('데이터가 없습니다')),
         ),
       );
     }
@@ -340,7 +340,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
               children: data
                   .map((item) => Chip(
                         label: Text(
-                          '${item.region}: ${item.userCount} (${item.percentage.toStringAsFixed(1)}%)',
+                          '${item.region}: ${item.userCount}명 (${item.percentage.toStringAsFixed(1)}%)',
                         ),
                       ))
                   .toList(),
@@ -356,7 +356,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
       return const Card(
         child: Padding(
           padding: EdgeInsets.all(32),
-          child: Center(child: Text('No data available')),
+          child: Center(child: Text('데이터가 없습니다')),
         ),
       );
     }
@@ -429,7 +429,7 @@ class UsersAnalyticsPage extends ConsumerWidget {
                                 ),
                               ),
                               Text(
-                                '${item.userCount} users',
+                                '${item.userCount}명',
                                 style: TextStyle(color: Colors.grey[600]),
                               ),
                               const SizedBox(width: 16),
@@ -459,11 +459,11 @@ class UsersAnalyticsPage extends ConsumerWidget {
           children: [
             Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
             const SizedBox(height: 16),
-            Text('Error: $error'),
+            Text('오류: $error'),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: onRetry,
-              child: const Text('Retry'),
+              child: const Text('다시 시도'),
             ),
           ],
         ),

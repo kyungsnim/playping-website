@@ -38,14 +38,14 @@ class LoginPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'PlayPing Admin',
+                    'PlayPing 관리자',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Administrator Dashboard',
+                    '관리자 대시보드',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -65,7 +65,7 @@ class LoginPage extends ConsumerWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Access denied. Your email is not authorized.',
+                              '접근이 거부되었습니다. 관리자 권한이 없는 계정입니다.',
                               style: TextStyle(color: Colors.red[700]),
                             ),
                           ),
@@ -77,7 +77,7 @@ class LoginPage extends ConsumerWidget {
                       onPressed: () {
                         ref.read(adminAuthProvider.notifier).signOut();
                       },
-                      child: const Text('Try with different account'),
+                      child: const Text('다른 계정으로 시도'),
                     ),
                   ] else ...[
                     SizedBox(
@@ -95,7 +95,7 @@ class LoginPage extends ConsumerWidget {
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('Login failed: $e'),
+                                        content: Text('로그인 실패: $e'),
                                         backgroundColor: Colors.red,
                                       ),
                                     );
@@ -114,15 +114,15 @@ class LoginPage extends ConsumerWidget {
                             : const Icon(Icons.login),
                         label: Text(
                           authState == AdminAuthState.loading
-                              ? 'Signing in...'
-                              : 'Sign in with Google',
+                              ? '로그인 중...'
+                              : 'Google로 로그인',
                         ),
                       ),
                     ),
                   ],
                   const SizedBox(height: 24),
                   Text(
-                    'Only authorized administrators can access this dashboard.',
+                    '승인된 관리자만 이 대시보드에 접근할 수 있습니다.',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.grey[500],
                         ),
