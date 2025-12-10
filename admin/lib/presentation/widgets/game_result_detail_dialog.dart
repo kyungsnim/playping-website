@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -184,11 +185,35 @@ class _DetailContent extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                'Room ID: ${detail.gameInfo.roomId}',
+                'Room ID: ',
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[500],
                 ),
+              ),
+              SelectableText(
+                detail.gameInfo.roomId,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                  fontFamily: 'monospace',
+                ),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                icon: const Icon(Icons.copy, size: 14),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                tooltip: '복사',
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: detail.gameInfo.roomId));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Room ID가 복사되었습니다'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
               ),
               const Spacer(),
               TextButton(
