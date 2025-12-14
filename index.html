@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayPing - 함께하는 파티 게임</title>
-    <meta name="description" content="친구들과 실시간으로 즐기는 멀티플레이어 파티 게임! 다양한 미니게임으로 모임을 더욱 즐겁게 만들어보세요.">
-    <meta name="keywords" content="파티게임, 멀티플레이어, 미니게임, 친구, 실시간, PlayPing, 플레이핑">
-    <meta property="og:title" content="PlayPing - 함께하는 파티 게임">
-    <meta property="og:description" content="친구들과 실시간으로 즐기는 멀티플레이어 파티 게임!">
+    <title>PlayPing - 친구들과 함께하는 멀티플레이어 파티 게임</title>
+    <meta name="description" content="20가지 이상의 다양한 미니게임으로 친구들과 실시간 대결! 두뇌게임부터 액션게임까지, PlayPing에서 모두 즐겨보세요.">
+    <meta name="keywords" content="파티게임, 멀티플레이어, 미니게임, 친구, 실시간, PlayPing, 플레이핑, 두뇌게임, 퀴즈게임">
+    <meta property="og:title" content="PlayPing - 친구들과 함께하는 멀티플레이어 파티 게임">
+    <meta property="og:description" content="20가지 이상의 다양한 미니게임으로 친구들과 실시간 대결!">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="https://playping.page/og-image.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -27,6 +28,8 @@
             --dark: #2C3E50;
             --light: #F7F9FC;
             --gradient: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 50%, #FFB8B8 100%);
+            --gradient-blue: linear-gradient(135deg, #4ECDC4 0%, #44A9A0 100%);
+            --gradient-purple: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);
         }
 
         body {
@@ -49,7 +52,7 @@
         }
 
         nav {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -63,6 +66,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            text-decoration: none;
         }
 
         .logo-icon {
@@ -100,8 +104,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 6rem 2rem;
-            background: var(--gradient);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 6rem 2rem 4rem;
             position: relative;
             overflow: hidden;
         }
@@ -109,171 +113,238 @@
         .hero::before {
             content: '';
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
             border-radius: 50%;
-            top: -100px;
-            right: -100px;
+            top: -250px;
+            right: -250px;
             animation: float 6s ease-in-out infinite;
         }
 
         .hero::after {
             content: '';
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
             border-radius: 50%;
-            bottom: -50px;
-            left: -50px;
+            bottom: -200px;
+            left: -200px;
             animation: float 8s ease-in-out infinite reverse;
         }
 
         @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
             }
-
             50% {
-                transform: translateY(-20px);
+                transform: translateY(-20px) rotate(5deg);
             }
         }
 
         .hero-content {
             max-width: 1200px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+            text-align: center;
+            color: white;
             position: relative;
-            z-index: 10;
+            z-index: 1;
         }
 
-        .hero-text h1 {
+        .hero h1 {
             font-size: 3.5rem;
             font-weight: 900;
-            color: white;
-            line-height: 1.2;
             margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .hero-text h1 span {
-            color: var(--accent);
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.95;
         }
 
-        .hero-text p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 2rem;
+        .hero .description {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cta-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
+            justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 3rem;
         }
 
         .btn {
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1rem;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
             font-weight: 700;
+            border-radius: 50px;
             text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
         }
 
         .btn-primary {
             background: white;
             color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-secondary {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 2px solid white;
         }
 
-        .btn-secondary:hover {
-            background: white;
-            color: var(--primary);
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .hero-image {
-            position: relative;
-        }
-
-        .phone-mockup {
-            width: 100%;
-            max-width: 350px;
-            margin: 0 auto;
-            background: #1a1a1a;
-            border-radius: 40px;
-            padding: 15px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            transform: rotate(-5deg);
-            animation: phoneFloat 4s ease-in-out infinite;
-        }
-
-        @keyframes phoneFloat {
-
-            0%,
-            100% {
-                transform: rotate(-5deg) translateY(0);
-            }
-
-            50% {
-                transform: rotate(-5deg) translateY(-10px);
-            }
-        }
-
-        .phone-screen {
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-            border-radius: 30px;
-            padding: 2rem;
-            min-height: 500px;
+        .store-badges {
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            color: white;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .phone-screen h3 {
-            font-size: 1.5rem;
+        .store-badge {
+            height: 60px;
+            transition: transform 0.3s;
+        }
+
+        .store-badge:hover {
+            transform: scale(1.05);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: white;
+            padding: 4rem 2rem;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Games Section */
+        .games {
+            padding: 6rem 2rem;
+            background: var(--light);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--dark);
             margin-bottom: 1rem;
         }
 
-        .game-icons {
+        .section-header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .games-grid {
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
 
         .game-icon {
             width: 60px;
             height: 60px;
-            background: rgba(255, 255, 255, 0.2);
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            backdrop-filter: blur(10px);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .game-card .category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .game-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         /* Features Section */
@@ -282,46 +353,17 @@
             background: white;
         }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-
-        .section-title p {
-            color: #666;
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
         .features-grid {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 3rem;
         }
 
         .feature-card {
-            background: var(--light);
-            padding: 2rem;
-            border-radius: 20px;
             text-align: center;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.15);
+            padding: 2rem;
         }
 
         .feature-icon {
@@ -332,106 +374,40 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin: 0 auto 1.5rem;
             color: white;
         }
 
         .feature-card h3 {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--dark);
         }
 
         .feature-card p {
             color: #666;
-            line-height: 1.8;
-        }
-
-        /* Games Section */
-        .games {
-            padding: 6rem 2rem;
-            background: var(--light);
-        }
-
-        .games-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .game-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .game-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .game-emoji {
-            font-size: 2.5rem;
-            width: 60px;
-            height: 60px;
-            background: var(--light);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .game-info h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            color: var(--dark);
-        }
-
-        .game-info p {
-            font-size: 0.9rem;
-            color: #888;
+            font-size: 1.05rem;
+            line-height: 1.7;
         }
 
         /* How It Works */
         .how-it-works {
             padding: 6rem 2rem;
-            background: white;
+            background: var(--light);
         }
 
         .steps {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
         }
 
         .step {
             text-align: center;
             position: relative;
-        }
-
-        .step::after {
-            content: '';
-            position: absolute;
-            top: 40px;
-            right: -50%;
-            width: 100%;
-            height: 3px;
-            background: var(--primary);
-            opacity: 0.3;
-        }
-
-        .step:last-child::after {
-            display: none;
         }
 
         .step-number {
@@ -446,19 +422,17 @@
             font-weight: 900;
             color: white;
             margin: 0 auto 1.5rem;
-            position: relative;
-            z-index: 10;
         }
 
         .step h4 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 0.5rem;
             color: var(--dark);
         }
 
         .step p {
             color: #666;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
         }
 
         /* CTA Section */
@@ -481,446 +455,424 @@
             opacity: 0.9;
         }
 
-        .store-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .store-btn {
-            background: white;
-            color: var(--dark);
-            padding: 1rem 2rem;
-            border-radius: 15px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .store-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .store-btn .icon {
-            font-size: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .store-btn .icon svg {
-            width: 32px;
-            height: 32px;
-        }
-
-        .store-btn .text {
-            text-align: left;
-        }
-
-        .store-btn .text small {
-            display: block;
-            font-size: 0.75rem;
-            color: #888;
-        }
-
-        .store-btn .text span {
-            font-size: 1.1rem;
-        }
-
         /* Footer */
         footer {
             background: var(--dark);
             color: white;
-            padding: 3rem 2rem;
+            padding: 3rem 2rem 1rem;
         }
 
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 3rem;
+            margin-bottom: 2rem;
         }
 
-        .footer-brand h3 {
-            font-size: 1.5rem;
+        .footer-section h4 {
+            font-size: 1.2rem;
             margin-bottom: 1rem;
-            color: var(--primary);
         }
 
-        .footer-brand p {
-            color: #aaa;
-            line-height: 1.8;
-        }
-
-        .footer-links h4 {
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .footer-links ul {
+        .footer-section ul {
             list-style: none;
         }
 
-        .footer-links li {
+        .footer-section ul li {
             margin-bottom: 0.5rem;
         }
 
-        .footer-links a {
-            color: #aaa;
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: color 0.3s;
         }
 
-        .footer-links a:hover {
-            color: var(--primary);
+        .footer-section a:hover {
+            color: white;
         }
 
         .footer-bottom {
-            max-width: 1200px;
-            margin: 2rem auto 0;
+            text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            color: #888;
+            color: rgba(255, 255, 255, 0.6);
         }
 
-        /* Responsive */
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .hero-text h1 {
+            .hero h1 {
                 font-size: 2.5rem;
             }
 
-            .cta-buttons {
-                justify-content: center;
-            }
-
-            .phone-mockup {
-                max-width: 280px;
-            }
-
-            .steps {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .step::after {
-                display: none;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
+            .hero .subtitle {
+                font-size: 1.2rem;
             }
 
             .nav-links {
                 display: none;
             }
-        }
 
-        @media (max-width: 480px) {
-            .hero-text h1 {
-                font-size: 2rem;
+            .games-grid {
+                grid-template-columns: 1fr;
             }
 
             .steps {
                 grid-template-columns: 1fr;
             }
-        }
 
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+            .cta h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 
 <body>
+    <!-- Header -->
     <header>
         <nav>
-            <div class="logo">
-                <div class="logo-icon">P</div>
-                PlayPing
-            </div>
+            <a href="#" class="logo">
+                <div class="logo-icon">🎮</div>
+                <span>PlayPing</span>
+            </a>
             <ul class="nav-links">
-                <li><a href="#features">기능</a></li>
                 <li><a href="#games">게임</a></li>
-                <li><a href="#how">사용법</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="#download">다운로드</a></li>
+                <li><a href="#features">특징</a></li>
+                <li><a href="#how">이용방법</a></li>
+                <li><a href="./privacy.html">개인정보처리방침</a></li>
+                <li><a href="./terms.html">이용약관</a></li>
             </ul>
         </nav>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-text">
-                <h1>친구들과 <span>핑!</span> 하고<br>즐기는 파티 게임</h1>
-                <p>실시간 멀티플레이어로 최대 100명까지! 다양한 미니게임으로 모임을 더욱 특별하게 만들어보세요.</p>
-                <div class="cta-buttons">
-                    <a href="#download" class="btn btn-primary">
-                        무료 다운로드
-                    </a>
-                    <a href="#features" class="btn btn-secondary">
-                        자세히 보기
-                    </a>
-                </div>
+            <h1>친구들과 함께하는<br>멀티플레이어 파티 게임</h1>
+            <p class="subtitle">20가지 이상의 다양한 미니게임</p>
+            <p class="description">
+                두뇌게임, 반응속도, 추리게임까지! 친구들과 실시간으로 대결하며<br>
+                최고의 파티 타임을 즐겨보세요
+            </p>
+            <div class="cta-buttons">
+                <a href="#games" class="btn btn-primary">게임 둘러보기</a>
+                <a href="#how" class="btn btn-secondary">시작하기</a>
             </div>
-            <div class="hero-image">
-                <div class="phone-mockup">
-                    <div class="phone-screen">
-                        <h3>PlayPing</h3>
-                        <p>게임을 선택하세요!</p>
-                        <div class="game-icons">
-                            <div class="game-icon">⚡</div>
-                            <div class="game-icon">🧠</div>
-                            <div class="game-icon">❓</div>
-                            <div class="game-icon">🗺️</div>
-                            <div class="game-icon">🎯</div>
-                            <div class="game-icon">⌨️</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="store-badges">
+                <a href="https://apps.apple.com/app/playping/id6739144090" target="_blank">
+                    <img src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
+                        alt="Download on the App Store" class="store-badge">
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.mrgames.playping" target="_blank">
+                    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/ko_badge_web_generic.png"
+                        alt="Google Play에서 다운로드" class="store-badge">
+                </a>
             </div>
         </div>
     </section>
 
-    <section class="features" id="features">
-        <div class="section-title">
-            <h2>왜 PlayPing인가요?</h2>
-            <p>친구들과 함께하는 최고의 파티 게임 경험을 제공합니다</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card fade-in">
-                <div class="feature-icon">👥</div>
-                <h3>실시간 멀티플레이어</h3>
-                <p>최대 100명까지 동시에 접속하여 실시간으로 게임을 즐길 수 있습니다. 어디서든 친구들과 연결되세요!</p>
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <h3>20+</h3>
+                <p>다양한 미니게임</p>
             </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">📱</div>
-                <h3>QR 코드 간편 참가</h3>
-                <p>복잡한 설정 없이 QR 코드 스캔 한 번으로 즉시 게임방에 참가할 수 있습니다.</p>
+            <div class="stat-item">
+                <h3>실시간</h3>
+                <p>멀티플레이어 대결</p>
             </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🏆</div>
-                <h3>실시간 순위</h3>
-                <p>게임 중 실시간으로 순위를 확인하고, 친구들과 치열한 경쟁을 즐기세요!</p>
+            <div class="stat-item">
+                <h3>무료</h3>
+                <p>누구나 즐길 수 있는</p>
             </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🎨</div>
-                <h3>다양한 미니게임</h3>
-                <p>순발력, 기억력, 퀴즈 등 10가지 이상의 미니게임으로 지루할 틈이 없습니다.</p>
-            </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🌐</div>
-                <h3>다국어 지원</h3>
-                <p>한국어와 영어를 지원하여 전 세계 친구들과 함께 즐길 수 있습니다.</p>
-            </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🆓</div>
-                <h3>무료 이용</h3>
-                <p>모든 게임을 무료로 이용할 수 있습니다. 부담 없이 시작하세요!</p>
+            <div class="stat-item">
+                <h3>iOS/Android</h3>
+                <p>크로스 플랫폼 지원</p>
             </div>
         </div>
     </section>
 
-    <section class="games" id="games">
-        <div class="section-title">
-            <h2>다양한 미니게임</h2>
-            <p>취향에 맞는 게임을 선택하세요</p>
+    <!-- Games Section -->
+    <section id="games" class="games">
+        <div class="section-header">
+            <h2>다양한 게임을 즐겨보세요</h2>
+            <p>두뇌 게임부터 액션 게임까지, 20가지 이상의 미니게임</p>
         </div>
         <div class="games-grid">
-            <div class="game-card fade-in">
-                <div class="game-emoji">⚡</div>
-                <div class="game-info">
-                    <h4>순발력 게임</h4>
-                    <p>빠른 반응 속도 테스트</p>
-                </div>
+            <!-- 두뇌/퀴즈 게임 -->
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🧠</div>
+                <h3>초성맞추기</h3>
+                <span class="category">두뇌게임</span>
+                <p>주어진 초성으로 단어를 맞춰보세요. 빠르게 맞출수록 높은 점수!</p>
             </div>
-            <div class="game-card fade-in">
-                <div class="game-emoji">🧠</div>
-                <div class="game-info">
-                    <h4>기억력 게임</h4>
-                    <p>카드 매칭 챌린지</p>
-                </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📝</div>
+                <h3>한글 워들</h3>
+                <span class="category">두뇌게임</span>
+                <p>6번의 기회 안에 숨겨진 단어를 맞춰보세요!</p>
             </div>
-            <div class="game-card fade-in">
-                <div class="game-emoji">⭕</div>
-                <div class="game-info">
-                    <h4>OX 퀴즈</h4>
-                    <p>상식 테스트</p>
-                </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">🔢</div>
+                <h3>숫자맞추기</h3>
+                <span class="category">추리게임</span>
+                <p>힌트를 활용해 숨겨진 숫자를 찾아내세요!</p>
             </div>
-            <div class="game-card fade-in">
-                <div class="game-emoji">🗺️</div>
-                <div class="game-info">
-                    <h4>랜드마크 게임</h4>
-                    <p>세계 명소 맞추기</p>
-                </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">💡</div>
+                <h3>사자성어 게임</h3>
+                <span class="category">두뇌게임</span>
+                <p>주어진 뜻으로 사자성어를 맞춰보세요!</p>
             </div>
-            <div class="game-card fade-in">
-                <div class="game-emoji">🎯</div>
-                <div class="game-info">
-                    <h4>타일 매칭</h4>
-                    <p>패턴 인식 게임</p>
-                </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">❓</div>
+                <h3>OX퀴즈</h3>
+                <span class="category">퀴즈</span>
+                <p>다양한 상식 문제로 지식을 겨뤄보세요!</p>
             </div>
-            <div class="game-card fade-in">
-                <div class="game-emoji">⌨️</div>
-                <div class="game-info">
-                    <h4>타이핑 게임</h4>
-                    <p>타이핑 속도 대결</p>
-                </div>
+
+            <!-- 기억력 게임 -->
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">🃏</div>
+                <h3>메모리 카드</h3>
+                <span class="category">기억력</span>
+                <p>카드를 뒤집어 같은 그림을 찾아보세요!</p>
             </div>
-            <div class="game-card fade-in">
-                <div class="game-emoji">🔢</div>
-                <div class="game-info">
-                    <h4>수학 연산</h4>
-                    <p>암산 능력 테스트</p>
-                </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">🎨</div>
+                <h3>타일 매칭</h3>
+                <span class="category">기억력</span>
+                <p>패턴을 기억하고 같은 타일을 매칭하세요!</p>
             </div>
-            <div class="game-card fade-in">
-                <div class="game-emoji">📚</div>
-                <div class="game-info">
-                    <h4>사자성어 퀴즈</h4>
-                    <p>한자 성어 학습</p>
-                </div>
+
+            <!-- 반응속도 게임 -->
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">⚡</div>
+                <h3>스피드 타이핑</h3>
+                <span class="category">반응속도</span>
+                <p>빠르고 정확하게 단어를 입력하세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">🎯</div>
+                <h3>양궁 게임</h3>
+                <span class="category">반응속도</span>
+                <p>정확한 타이밍에 화살을 쏴서 과녁을 맞추세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);">🐕</div>
+                <h3>강아지 피하기</h3>
+                <span class="category">액션</span>
+                <p>달려오는 강아지를 재빠르게 피하세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);">🎮</div>
+                <h3>점프 게임</h3>
+                <span class="category">액션</span>
+                <p>장애물을 뛰어넘으며 최대한 멀리 가보세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">🎨</div>
+                <h3>색깔 바꾸기</h3>
+                <span class="category">반응속도</span>
+                <p>빠르게 같은 색을 선택하세요!</p>
+            </div>
+
+            <!-- 추리/탐색 게임 -->
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);">🔍</div>
+                <h3>틀린그림찾기</h3>
+                <span class="category">관찰력</span>
+                <p>두 그림에서 다른 부분을 찾아보세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%);">🚪</div>
+                <h3>방탈출 게임</h3>
+                <span class="category">추리</span>
+                <p>단서를 찾아 비밀번호를 풀고 탈출하세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">🌍</div>
+                <h3>랜드마크 맞추기</h3>
+                <span class="category">지리</span>
+                <p>세계의 유명한 랜드마크를 맞춰보세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">❓</div>
+                <h3>이상한것찾기</h3>
+                <span class="category">관찰력</span>
+                <p>여러 항목 중 이상한 것을 찾아내세요!</p>
+            </div>
+
+            <!-- 계산 게임 -->
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #96fbc4 0%, #f9f586 100%);">➕</div>
+                <h3>숫자 합 맞추기</h3>
+                <span class="category">계산</span>
+                <p>목표 숫자를 만들 수 있는 조합을 찾으세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">⚡</div>
+                <h3>빠른 계산</h3>
+                <span class="category">계산</span>
+                <p>제한 시간 내에 계산 문제를 풀어보세요!</p>
+            </div>
+
+            <!-- 타이밍 게임 -->
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%);">💣</div>
+                <h3>폭탄 돌리기</h3>
+                <span class="category">타이밍</span>
+                <p>폭탄이 터지기 전에 빠르게 넘기세요!</p>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);">⬅️➡️</div>
+                <h3>좌우 게임</h3>
+                <span class="category">반응속도</span>
+                <p>화살표 방향을 빠르게 선택하세요!</p>
+            </div>
+
+            <!-- 신규 게임 -->
+            <div class="game-card">
+                <div class="game-icon" style="background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);">🎨</div>
+                <h3>이어그리기</h3>
+                <span class="category">창작</span>
+                <p>친구가 그린 그림에 이어서 그려보세요!</p>
             </div>
         </div>
     </section>
 
-    <section class="how-it-works" id="how">
-        <div class="section-title">
-            <h2>사용 방법</h2>
-            <p>간단한 4단계로 시작하세요</p>
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <h2>PlayPing의 특별함</h2>
+            <p>친구들과 함께하는 최고의 파티 게임</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>실시간 멀티플레이</h3>
+                <p>친구들과 같은 공간에서 실시간으로 대결하세요. 누가 진정한 챔피언인지 가려보세요!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3>다양한 게임 모드</h3>
+                <p>20가지 이상의 미니게임으로 지루할 틈이 없어요. 두뇌게임부터 액션게임까지!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>순위와 통계</h3>
+                <p>게임 결과를 실시간으로 확인하고 친구들과 점수를 비교해보세요!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>쉬운 방 만들기</h3>
+                <p>클릭 한 번으로 게임방을 만들고 친구들을 초대하세요. QR코드로 간편하게!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>크로스 플랫폼</h3>
+                <p>iOS, Android 상관없이 함께 즐길 수 있어요. 모두가 함께!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>깔끔한 디자인</h3>
+                <p>직관적이고 아름다운 UI로 누구나 쉽게 즐길 수 있어요!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how" class="how-it-works">
+        <div class="section-header">
+            <h2>간단한 3단계로 시작하세요</h2>
+            <p>복잡한 설정 없이 바로 즐기는 파티 게임</p>
         </div>
         <div class="steps">
-            <div class="step fade-in">
+            <div class="step">
                 <div class="step-number">1</div>
-                <h4>앱 설치</h4>
-                <p>App Store 또는 Google Play에서 무료로 다운로드</p>
+                <h4>앱 다운로드</h4>
+                <p>App Store 또는 Google Play에서 PlayPing을 다운로드하세요</p>
             </div>
-            <div class="step fade-in">
+            <div class="step">
                 <div class="step-number">2</div>
-                <h4>로그인</h4>
-                <p>간편하게 계정 생성 또는 익명으로 시작</p>
-            </div>
-            <div class="step fade-in">
-                <div class="step-number">3</div>
                 <h4>방 만들기</h4>
-                <p>게임방을 만들고 친구들을 초대</p>
+                <p>원하는 게임을 선택하고 방을 만들어 친구들을 초대하세요</p>
             </div>
-            <div class="step fade-in">
-                <div class="step-number">4</div>
+            <div class="step">
+                <div class="step-number">3</div>
                 <h4>게임 시작!</h4>
-                <p>원하는 게임을 선택하고 플레이</p>
+                <p>친구들과 실시간으로 대결하며 즐거운 시간을 보내세요</p>
             </div>
         </div>
     </section>
 
-    <section class="cta" id="download">
+    <!-- CTA Section -->
+    <section class="cta">
         <h2>지금 바로 시작하세요!</h2>
-        <p>친구들과 함께하는 즐거운 시간, PlayPing이 함께합니다.</p>
-        <div class="store-buttons">
-            <a href="https://apps.apple.com/kr/app/playping/id6754782185" class="store-btn" target="_blank" rel="noopener noreferrer">
-                <div class="icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                </div>
-                <div class="text">
-                    <small>Download on the</small>
-                    <span>App Store</span>
-                </div>
+        <p>친구들과 함께 즐거운 파티 게임을 경험해보세요</p>
+        <div class="store-badges">
+            <a href="https://apps.apple.com/app/playping/id6739144090" target="_blank">
+                <img src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
+                    alt="Download on the App Store" class="store-badge">
             </a>
-            <a href="https://play.google.com/store/apps/details?id=com.kyungsnim.mr_games" class="store-btn" target="_blank" rel="noopener noreferrer">
-                <div class="icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
-                </div>
-                <div class="text">
-                    <small>GET IT ON</small>
-                    <span>Google Play</span>
-                </div>
+            <a href="https://play.google.com/store/apps/details?id=com.mrgames.playping" target="_blank">
+                <img src="https://play.google.com/intl/en_us/badges/static/images/badges/ko_badge_web_generic.png"
+                    alt="Google Play에서 다운로드" class="store-badge">
             </a>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-brand">
-                <h3>PlayPing</h3>
-                <p>친구들과 실시간으로 즐기는 멀티플레이어 파티 게임! 다양한 미니게임으로 모임을 더욱 특별하게 만들어보세요.</p>
+            <div class="footer-section">
+                <h4>PlayPing</h4>
+                <p>친구들과 함께하는 멀티플레이어 파티 게임</p>
             </div>
-            <div class="footer-links">
-                <h4>법적 정보</h4>
+            <div class="footer-section">
+                <h4>정보</h4>
                 <ul>
-                    <li><a href="privacy.html">개인정보 처리방침</a></li>
-                    <li><a href="terms.html">서비스 이용약관</a></li>
+                    <li><a href="./privacy.html">개인정보처리방침</a></li>
+                    <li><a href="./terms.html">이용약관</a></li>
+                    <li><a href="./faq.html">자주 묻는 질문</a></li>
                 </ul>
             </div>
-            <div class="footer-links">
-                <h4>앱 다운로드</h4>
+            <div class="footer-section">
+                <h4>다운로드</h4>
                 <ul>
-                    <li><a href="https://apps.apple.com/kr/app/playping/id6754782185" target="_blank" rel="noopener noreferrer">App Store</a></li>
-                    <li><a href="https://play.google.com/store/apps/details?id=com.kyungsnim.mr_games" target="_blank" rel="noopener noreferrer">Google Play</a></li>
+                    <li><a href="https://apps.apple.com/app/playping/id6739144090" target="_blank">App Store</a></li>
+                    <li><a href="https://play.google.com/store/apps/details?id=com.mrgames.playping" target="_blank">Google Play</a></li>
                 </ul>
             </div>
-            <div class="footer-links">
-                <h4>고객 지원</h4>
+            <div class="footer-section">
+                <h4>문의</h4>
                 <ul>
-                    <li><a href="mailto:kyungsnim@kakao.com">이메일 문의</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="mailto:support@playping.page">support@playping.page</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 PlayPing. All rights reserved.</p>
+            <p>&copy; 2024 PlayPing. All rights reserved.</p>
         </div>
     </footer>
-
-    <script>
-        // Scroll Animation
-        const fadeElements = document.querySelectorAll('.fade-in');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
-
-        fadeElements.forEach(el => observer.observe(el));
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>
