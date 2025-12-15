@@ -8,6 +8,11 @@ final gameRepositoryProvider = Provider<GameRepository>((ref) {
   return GameRepository();
 });
 
+/// 캐시 무효화 함수
+void invalidateGameStatsCache() {
+  GameRepository.invalidateCache();
+}
+
 /// Provider for overall game statistics
 final gameStatsProvider = FutureProvider<GameStats>((ref) async {
   final repository = ref.watch(gameRepositoryProvider);

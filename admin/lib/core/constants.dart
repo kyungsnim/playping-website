@@ -93,5 +93,7 @@ class AdminConstants {
     'GameType.colorSwitch': 'Color Switch',
     'GameType.koreanWordle': 'Korean Wordle',
     'GameType.oddOneOut': 'Odd One Out',
+    'GameType.initialConsonant': 'Initial Consonant',
+    'GameType.drawChain': 'Draw Chain',
   };
 }

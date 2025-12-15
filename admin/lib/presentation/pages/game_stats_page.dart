@@ -24,6 +24,8 @@ class GameStatsPage extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
+              // 캐시 무효화 후 provider 새로고침
+              invalidateGameStatsCache();
               ref.invalidate(gameStatsProvider);
               ref.invalidate(gameTypeStatsProvider);
               ref.invalidate(dailyGamesProvider(30));
