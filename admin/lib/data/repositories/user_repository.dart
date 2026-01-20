@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../core/constants.dart';
 import '../models/user_stats.dart';
@@ -7,8 +8,10 @@ import '../models/user_stats.dart';
 class UserRepository {
   final FirebaseFirestore _firestore;
 
-  UserRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  UserRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore {
+    debugPrint('🔧 UserRepository 생성됨 - databaseId: ${_firestore.databaseId}');
+  }
 
   CollectionReference<Map<String, dynamic>> get _usersCollection =>
       _firestore.collection(AdminConstants.usersCollection);
@@ -62,7 +65,7 @@ class UserRepository {
         .count()
         .get();
 
-    return UserStats(
+    final stats = UserStats(
       totalUsers: totalUsers,
       todayNewUsers: todayNewUsersSnapshot.count ?? 0,
       weekNewUsers: weekNewUsersSnapshot.count ?? 0,
@@ -71,6 +74,8 @@ class UserRepository {
       activeWeek: activeWeekSnapshot.count ?? 0,
       activeMonth: activeMonthSnapshot.count ?? 0,
     );
+    debugPrint('📊 getUserStats 결과 (${_firestore.databaseId}): totalUsers=$totalUsers');
+    return stats;
   }
 
   /// Get user statistics by country

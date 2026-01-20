@@ -1,22 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/models/user_stats.dart';
 import '../../data/repositories/user_repository.dart';
+import '../providers/region_provider.dart';
+import '../widgets/region_filter.dart';
 
 /// 사용자 관리 페이지 (무한 스크롤)
-class UserManagementPage extends StatefulWidget {
+class UserManagementPage extends ConsumerStatefulWidget {
   const UserManagementPage({super.key});
 
   @override
-  State<UserManagementPage> createState() => _UserManagementPageState();
+  ConsumerState<UserManagementPage> createState() => _UserManagementPageState();
 }
 
-class _UserManagementPageState extends State<UserManagementPage> {
-  final UserRepository _userRepository = UserRepository();
+class _UserManagementPageState extends ConsumerState<UserManagementPage> {
+  late UserRepository _userRepository;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+  FirestoreRegion? _currentRegion;
 
   final List<UserModel> _users = [];
   DocumentSnapshot? _lastDocument;
@@ -28,8 +32,20 @@ class _UserManagementPageState extends State<UserManagementPage> {
   @override
   void initState() {
     super.initState();
-    _loadUsers();
     _scrollController.addListener(_onScroll);
+    // 초기 로드는 didChangeDependencies에서 수행
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final selectedRegion = ref.read(selectedRegionProvider);
+    if (_currentRegion != selectedRegion) {
+      _currentRegion = selectedRegion;
+      final firestore = ref.read(regionFirestoreProvider);
+      _userRepository = UserRepository(firestore: firestore);
+      _loadUsers();
+    }
   }
 
   @override
@@ -136,13 +152,38 @@ class _UserManagementPageState extends State<UserManagementPage> {
       context: context,
       builder: (context) => UserDetailDialog(
         user: user,
+        userRepository: _userRepository,
         onUserUpdated: _loadUsers,
       ),
     );
   }
 
+  Color _getRegionColor(FirestoreRegion region) {
+    switch (region) {
+      case FirestoreRegion.seoul:
+        return Colors.blue;
+      case FirestoreRegion.europe:
+        return Colors.green;
+      case FirestoreRegion.us:
+        return Colors.orange;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // 리전 변경 감지
+    ref.listen<FirestoreRegion>(selectedRegionProvider, (previous, next) {
+      if (previous != next) {
+        _currentRegion = next;
+        final firestore = ref.read(regionFirestoreProvider);
+        _userRepository = UserRepository(firestore: firestore);
+        _searchController.clear();
+        _loadUsers();
+      }
+    });
+
+    final selectedRegion = ref.watch(selectedRegionProvider);
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,25 +191,65 @@ class _UserManagementPageState extends State<UserManagementPage> {
           // 헤더
           Padding(
             padding: const EdgeInsets.all(24),
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '사용자 관리',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '사용자 관리',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '가입된 사용자를 조회하고 관리합니다',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey[600],
+                      const SizedBox(height: 8),
+                      Text(
+                        '가입된 사용자를 조회하고 관리합니다',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Colors.grey[600],
+                            ),
                       ),
+                    ],
+                  ),
                 ),
+                const RegionFilter(),
               ],
             ),
           ),
+
+          // 리전 안내
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: _getRegionColor(selectedRegion).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: _getRegionColor(selectedRegion).withValues(alpha: 0.3),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    size: 18,
+                    color: _getRegionColor(selectedRegion),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${selectedRegion.displayName} 리전의 사용자를 표시합니다.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: _getRegionColor(selectedRegion),
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
 
           // 검색창
           Padding(
@@ -472,11 +553,13 @@ class _UserListTile extends StatelessWidget {
 
 class UserDetailDialog extends StatefulWidget {
   final UserModel user;
+  final UserRepository userRepository;
   final VoidCallback onUserUpdated;
 
   const UserDetailDialog({
     super.key,
     required this.user,
+    required this.userRepository,
     required this.onUserUpdated,
   });
 
@@ -485,7 +568,7 @@ class UserDetailDialog extends StatefulWidget {
 }
 
 class _UserDetailDialogState extends State<UserDetailDialog> {
-  final UserRepository _userRepository = UserRepository();
+  late UserRepository _userRepository;
   late UserModel _user;
   bool _isLoading = false;
 
@@ -493,6 +576,7 @@ class _UserDetailDialogState extends State<UserDetailDialog> {
   void initState() {
     super.initState();
     _user = widget.user;
+    _userRepository = widget.userRepository;
   }
 
   Future<void> _refreshUser() async {

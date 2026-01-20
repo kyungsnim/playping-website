@@ -3,15 +3,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../providers/auth_provider.dart';
+import '../providers/region_provider.dart';
 import '../providers/stats_provider.dart';
+import '../widgets/region_filter.dart';
 import '../widgets/stat_card.dart';
 import '../widgets/signup_chart.dart';
 
-class DashboardPage extends ConsumerWidget {
+class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends ConsumerState<DashboardPage> {
+  @override
+  Widget build(BuildContext context) {
+    // 리전 변경 감지 시 통계 데이터 새로고침
+    ref.listen<FirestoreRegion>(selectedRegionProvider, (previous, next) {
+      if (previous != next) {
+        debugPrint('🔄 리전 변경 감지: ${previous?.displayName} → ${next.displayName}');
+        ref.invalidate(userRepositoryProvider);
+        ref.invalidate(userStatsProvider);
+        ref.invalidate(dailySignupsProvider(30));
+      }
+    });
+
     final userStats = ref.watch(userStatsProvider);
     final dailySignups = ref.watch(dailySignupsProvider(30));
     final currentUser = ref.watch(currentUserProvider);
@@ -83,14 +100,25 @@ class DashboardPage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[500],
-                        ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const RegionFilter(),
+                      const SizedBox(height: 8),
+                      Text(
+                        DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.grey[500],
+                            ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
+
+              // Region Info
+              _buildRegionInfo(context, ref),
               const SizedBox(height: 32),
 
               // User Stats Cards
@@ -235,5 +263,49 @@ class DashboardPage extends ConsumerWidget {
       return '${(number / 1000).toStringAsFixed(1)}K';
     }
     return number.toString();
+  }
+
+  Widget _buildRegionInfo(BuildContext context, WidgetRef ref) {
+    final selectedRegion = ref.watch(selectedRegionProvider);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: _getRegionColor(selectedRegion).withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: _getRegionColor(selectedRegion).withValues(alpha: 0.3),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.info_outline,
+            color: _getRegionColor(selectedRegion),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              '현재 ${selectedRegion.displayName} 리전의 데이터를 보고 있습니다. '
+              '다른 리전의 데이터를 보려면 오른쪽 상단 필터를 변경하세요.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: _getRegionColor(selectedRegion),
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getRegionColor(FirestoreRegion region) {
+    switch (region) {
+      case FirestoreRegion.seoul:
+        return Colors.blue;
+      case FirestoreRegion.europe:
+        return Colors.green;
+      case FirestoreRegion.us:
+        return Colors.orange;
+    }
   }
 }

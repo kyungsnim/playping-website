@@ -4,7 +4,9 @@ import 'package:intl/intl.dart';
 
 import '../../data/models/game_result_model.dart';
 import '../providers/game_results_provider.dart';
+import '../providers/region_provider.dart';
 import '../widgets/game_result_detail_dialog.dart';
+import '../widgets/region_filter.dart';
 
 class GameResultsPage extends ConsumerStatefulWidget {
   const GameResultsPage({super.key});
@@ -38,6 +40,16 @@ class _GameResultsPageState extends ConsumerState<GameResultsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 리전 변경 감지 시 게임 결과 새로고침
+    ref.listen<FirestoreRegion>(selectedRegionProvider, (previous, next) {
+      if (previous != next) {
+        debugPrint('🔄 게임결과 리전 변경 감지: ${previous?.displayName} → ${next.displayName}');
+        // provider를 invalidate해서 새 repository로 재생성
+        ref.invalidate(gameResultRepositoryProvider);
+        ref.invalidate(gameResultsProvider);
+      }
+    });
+
     final state = ref.watch(gameResultsProvider);
 
     return Scaffold(
@@ -58,6 +70,9 @@ class _GameResultsPageState extends ConsumerState<GameResultsPage> {
                       ),
                 ),
                 const Spacer(),
+                // Region filter
+                const RegionFilter(),
+                const SizedBox(width: 16),
                 // Refresh button
                 IconButton(
                   icon: const Icon(Icons.refresh),
@@ -69,6 +84,12 @@ class _GameResultsPageState extends ConsumerState<GameResultsPage> {
               ],
             ),
           ),
+          // Region info
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: _buildRegionInfo(context, ref),
+          ),
+          const SizedBox(height: 16),
           const Divider(height: 1),
 
           // Content
@@ -161,6 +182,48 @@ class _GameResultsPageState extends ConsumerState<GameResultsPage> {
       context: context,
       builder: (context) => GameResultDetailDialog(roomId: result.roomId),
     );
+  }
+
+  Widget _buildRegionInfo(BuildContext context, WidgetRef ref) {
+    final selectedRegion = ref.watch(selectedRegionProvider);
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: _getRegionColor(selectedRegion).withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: _getRegionColor(selectedRegion).withValues(alpha: 0.3),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.info_outline,
+            size: 18,
+            color: _getRegionColor(selectedRegion),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            '${selectedRegion.displayName} 리전의 게임 결과를 표시합니다.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: _getRegionColor(selectedRegion),
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getRegionColor(FirestoreRegion region) {
+    switch (region) {
+      case FirestoreRegion.seoul:
+        return Colors.blue;
+      case FirestoreRegion.europe:
+        return Colors.green;
+      case FirestoreRegion.us:
+        return Colors.orange;
+    }
   }
 }
 

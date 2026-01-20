@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/models/game_result_model.dart';
 import '../../data/repositories/game_result_repository.dart';
+import 'region_provider.dart';
 
-/// Provider for game result repository
-final gameResultRepositoryProvider = Provider<GameResultRepository>((ref) {
-  return GameResultRepository();
+/// Provider for game result repository (uses selected region's Firestore)
+final gameResultRepositoryProvider = Provider.autoDispose<GameResultRepository>((ref) {
+  final firestore = ref.watch(regionFirestoreProvider);
+  debugPrint('🎮 gameResultRepositoryProvider 재생성: firestore.databaseId=${firestore.databaseId}');
+  return GameResultRepository(firestore: firestore);
 });
 
 /// State for paginated game results
@@ -106,28 +110,28 @@ class GameResultsNotifier extends StateNotifier<GameResultsState> {
 
 /// Provider for paginated game results
 final gameResultsProvider =
-    StateNotifierProvider<GameResultsNotifier, GameResultsState>((ref) {
+    StateNotifierProvider.autoDispose<GameResultsNotifier, GameResultsState>((ref) {
   final repository = ref.watch(gameResultRepositoryProvider);
   return GameResultsNotifier(repository);
 });
 
 /// Provider for game result detail
 final gameResultDetailProvider =
-    FutureProvider.family<GameResultDetail, String>((ref, roomId) async {
+    FutureProvider.autoDispose.family<GameResultDetail, String>((ref, roomId) async {
   final repository = ref.watch(gameResultRepositoryProvider);
   return repository.getGameResultDetail(roomId);
 });
 
 /// Provider for multi-game scores
 final multiGameScoresProvider =
-    FutureProvider.family<List<MultiGameScore>, String>((ref, roomId) async {
+    FutureProvider.autoDispose.family<List<MultiGameScore>, String>((ref, roomId) async {
   final repository = ref.watch(gameResultRepositoryProvider);
   return repository.getMultiGameScores(roomId);
 });
 
 /// Provider for team game scores
 final teamGameScoresProvider =
-    FutureProvider.family<List<TeamGameScore>, String>((ref, roomId) async {
+    FutureProvider.autoDispose.family<List<TeamGameScore>, String>((ref, roomId) async {
   final repository = ref.watch(gameResultRepositoryProvider);
   return repository.getTeamGameScores(roomId);
 });

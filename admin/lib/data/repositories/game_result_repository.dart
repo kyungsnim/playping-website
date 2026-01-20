@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/game_result_model.dart';
 
@@ -6,8 +7,10 @@ import '../models/game_result_model.dart';
 class GameResultRepository {
   final FirebaseFirestore _firestore;
 
-  GameResultRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  GameResultRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore {
+    debugPrint('🎮 GameResultRepository 생성됨 - databaseId: ${_firestore.databaseId}');
+  }
 
   CollectionReference<Map<String, dynamic>> get _roomsCollection =>
       _firestore.collection('rooms');
@@ -18,10 +21,30 @@ class GameResultRepository {
     int limit = 10,
     DocumentSnapshot? startAfter,
   }) async {
+    debugPrint('🔍 getFinishedGames 호출 - DB: ${_firestore.databaseId}');
+
+    // 먼저 전체 rooms 컬렉션 개수 확인 (디버그용)
+    try {
+      final allRoomsSnapshot = await _roomsCollection.limit(100).get();
+      debugPrint('📊 전체 rooms 수: ${allRoomsSnapshot.docs.length}');
+
+      // 각 방의 상태 확인
+      final statusCounts = <String, int>{};
+      for (final doc in allRoomsSnapshot.docs) {
+        final status = doc.data()['status'] as String? ?? 'unknown';
+        statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+      }
+      debugPrint('📊 상태별 방 수: $statusCounts');
+    } catch (e) {
+      debugPrint('⚠️ 전체 rooms 조회 실패: $e');
+    }
+
     // Get all finished rooms and sort in memory
     final snapshot = await _roomsCollection
         .where('status', isEqualTo: 'RoomStatus.finished')
         .get();
+
+    debugPrint('📊 완료된 게임 수: ${snapshot.docs.length}');
 
     // Convert to models and sort by finishedAt descending
     var results = snapshot.docs
